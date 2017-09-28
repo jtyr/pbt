@@ -1,2 +1,8 @@
 __pycache__
 *.pyc
+*.c
+*.c~
+*.o
+Makefile
+python_bullet_train
+freeze.py
