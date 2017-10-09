@@ -5,6 +5,7 @@ from subprocess import Popen, PIPE
 
 
 SHELL = getenv('PBT_SHELL', basename(getenv('SHELL', 'zsh')))
+BOOL_TRUE = [True, '1', 'yes', 'Yes', 'YES', 'true', 'True', 'TRUE']
 
 
 def run(args):
@@ -46,9 +47,7 @@ class Car:
     }
 
     def __init__(self):
-        bool_true = [True, '1', 'yes', 'Yes', 'YES', 'true', 'True', 'TRUE']
-
-        if self.display is True or self.display in bool_true:
+        if self.display is True or self.display in BOOL_TRUE:
             self.display = True
         else:
             self.display = False

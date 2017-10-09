@@ -22,6 +22,8 @@ class StatusCar(Car):
     default_root_fg = default_ok_fg if _is_ok() else default_error_fg
     default_symbol_bg = default_root_bg
     default_symbol_fg = default_root_fg
+    default_code_bg = default_root_bg
+    default_code_fg = default_root_fg
 
     model = {
         'root': {
@@ -41,6 +43,15 @@ class StatusCar(Car):
                     '{{ ' + ('Ok' if _is_ok() else 'Error') + ' }}'
                 )
             ),
+        },
+        'Code': {
+            'bg': getenv(
+                'PBT_CAR_STATUS_CODE_BG', getenv(
+                    'PBT_CAR_STATUS_BG', default_code_bg)),
+            'fg': getenv(
+                'PBT_CAR_STATUS_CODE_FG', getenv(
+                    'PBT_CAR_STATUS_FG', default_code_fg)),
+            'text': getenv('PBT_CAR_STATUS_CODE_TEXT', argv[1]),
         },
         'Error': {
             'bg': getenv(
