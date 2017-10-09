@@ -1,55 +1,66 @@
-import re
+from os import getenv
+from os.path import basename
+from re import compile, match
+from subprocess import Popen, PIPE
+
+
+SHELL = getenv('PBT_SHELL', basename(getenv('SHELL', 'zsh')))
+
+
+def run(args):
+    rc = 1
+    out = ''
+    err = ''
+
+    try:
+        proc = Popen(args, stdout=PIPE, stderr=PIPE)
+    except Exception as e:
+        proc = None
+        err = e
+
+    if proc is not None:
+        out, err = proc.communicate()
+        rc = proc.returncode
+
+    return rc, out.decode('utf-8').strip(), err.decode('utf-8').strip()
 
 
 class Car:
-    fg = {
-        'default': 39,
-        'black': 30,
-        'red': 31,
-        'green': 32,
-        'yellow': 33,
-        'blue': 34,
-        'magenta': 35,
-        'cyan': 36,
-        'light_gray': 37,
-        'dark_gray': 90,
-        'light_red': 91,
-        'light_green': 92,
-        'light_yellow': 93,
-        'light_blue': 94,
-        'light_magenta': 95,
-        'light_cyan': 96,
-        'white': 97,
+    colors = {
+        'black': 0,
+        'red': 1,
+        'green': 2,
+        'yellow': 3,
+        'blue': 4,
+        'magenta': 5,
+        'cyan': 6,
+        'light_gray': 7,
+        'dark_gray': 8,
+        'light_red': 9,
+        'light_green': 10,
+        'light_yellow': 11,
+        'light_blue': 12,
+        'light_magenta': 13,
+        'light_cyan': 14,
+        'white': 15,
     }
-    bg = {
-        'default': 49,
-        'black': 40,
-        'red': 41,
-        'green': 42,
-        'yellow': 43,
-        'blue': 44,
-        'magenta': 45,
-        'cyan': 46,
-        'light_gray': 47,
-        'dark_gray': 100,
-        'light_red': 101,
-        'light_green': 102,
-        'light_yellow': 103,
-        'light_blue': 104,
-        'light_magenta': 105,
-        'light_cyan': 106,
-        'white': 107,
-    }
-    display = True
+
+    def __init__(self):
+        bool_true = [True, '1', 'yes', 'Yes', 'YES', 'true', 'True', 'TRUE']
+
+        if self.display is True or self.display in bool_true:
+            self.display = True
+        else:
+            self.display = False
 
     def format(self):
         if not self.display:
             return ''
 
-        pattern = re.compile('{{\s*(\w+)\s*}}')
+        pattern = compile('{{\s*(\w+)\s*}}')
         text = ("%s%s%s" % (
             self._color_start('root'),
-            self.model['root']['format'],
+            self.model['root']['text'],
             self._color_end()))
 
         # Allow element nesting to the depth of 10
@@ -76,20 +87,60 @@ class Car:
     def _color_start(self, element=None, bg=None, fg=None, text=None):
         if element is not None:
             e = self.model[element]
-            fg = e['fg']
-            bg = e['bg']
-            text = e['text'] if 'text' in e else ''
+            text = e['text'] if 'text' in e and element != 'root' else ''
 
-        return ('\x1b[%s;%sm%s' % (
-                self._get_fg(fg),
-                self._get_bg(bg),
-                text))
+            fg = self._get_color(e['fg'], True)
+            bg = self._get_color(e['bg'], False)
+
+        if SHELL == 'zsh':
+            return '%%{%s%%}%%{%s%%}%s' % (fg, bg, text)
+        else:
+            return '%s%s%s' % (fg, bg, text)
 
     def _color_end(self):
-        return '\x1b[0m'
+        return '' if SHELL == 'zsh' else '\x1b[00m'
 
-    def _get_fg(self, name):
-        return self.fg[name] if name in self.fg else name
+    def _get_color(self, name, fg):
+        if fg:
+            if SHELL == 'zsh':
+                kind = 'F'
+            else:
+                kind = 3
+        else:
+            if SHELL == 'zsh':
+                kind = 'K'
+            else:
+                kind = 4
 
-    def _get_bg(self, name):
-        return self.bg[name] if name in self.bg else name
+        if name == 'default':
+            # Default
+            if SHELL == 'zsh':
+                seq = '%%%s' % kind.lower()
+            else:
+                seq = '\x1b[%s9m' % kind
+        else:
+            if name in self.colors:
+                # Named color
+                if SHELL == 'zsh':
+                    seq = '%%%s{%s}' % (kind, self.colors[name])
+                else:
+                    seq = '\x1b[%s8;5;%sm' % (kind, self.colors[name])
+            elif match(r'^\d{1,3}$', name):
+                # Color number
+                if SHELL == 'zsh':
+                    seq = '%%%s{%s}' % (kind, name)
+                else:
+                    seq = '\x1b[%s8;5;%sm' % (kind, name)
+            elif (
+                    match(r'^\d{1,3};\d{1,3};\d{1,3}$', name) and
+                    SHELL != 'zsh'):
+                # RGB color
+                seq = '\x1b[%s8;2;%sm' % (kind, name)
+            else:
+                # If anything else, use default
+                if SHELL == 'zsh':
+                    seq = '%%%s' % kind.lower()
+                else:
+                    seq = '\x1b[%s9m' % kind
+
+        return seq

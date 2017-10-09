@@ -1,6 +1,8 @@
 Python Bullet Train
 ===================
 
+Prompt decoration for ZSH shell.
+
 
 Installation
 ------------

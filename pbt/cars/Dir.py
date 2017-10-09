@@ -4,7 +4,7 @@ from os.path import expanduser
 from pbt.core import Car
 
 
-def _getDir():
+def _get_dir():
     pwd = getcwd()
     dirs = pwd.split(sep)
 
@@ -19,19 +19,26 @@ def _getDir():
 
 
 class DirCar(Car):
+    default_root_bg = 'blue'
+    default_root_fg = 'light_gray'
+    default_dir_bg = default_root_bg
+    default_dir_fg = default_root_fg
+
     model = {
         'root': {
-            'bg': getenv('PBT_CAR_SIGN_BG', 'blue'),
-            'fg': getenv('PBT_CAR_SIGN_FG', 'light_gray'),
-            'format': getenv('PBT_CAR_SIGN_FORMAT', ' {{ Dir }} '),
+            'bg': getenv('PBT_CAR_DIR_BG', default_root_bg),
+            'fg': getenv('PBT_CAR_DIR_FG', default_root_fg),
+            'text': getenv('PBT_CAR_DIR_FORMAT', ' {{ Dir }} '),
         },
         'Dir': {
             'bg': getenv(
-                'PBT_CAR_SIGN_USER_BG', getenv(
-                    'PBT_CAR_SIGN_BG', 'blue')),
+                'PBT_CAR_DIR_DIR_BG', getenv(
+                    'PBT_CAR_DIR_BG', default_dir_bg)),
             'fg': getenv(
-                'PBT_CAR_SIGN_USER_FG', getenv(
-                    'PBT_CAR_SIGN_FG', 'light_gray')),
-            'text': getenv('PBT_CAR_SIGN_USER_FORMAT', _getDir()),
+                'PBT_CAR_DIR_DIR_FG', getenv(
+                    'PBT_CAR_DIR_FG', default_dir_fg)),
+            'text': getenv('PBT_CAR_DIR_DIR_TEXT', _get_dir()),
         },
     }
+
+    display = getenv('PBT_CAR_DIR_DISPLAY', True)
