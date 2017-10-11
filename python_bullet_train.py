@@ -2,14 +2,14 @@
 
 from importlib import import_module
 from os import getenv
-from os.path import basename
 from re import split as resplit
-from sys import stdout
+from sys import stderr, stdout
+from traceback import print_exc
 
-from pbt.core import SHELL
+from pbt.core import BOOL_TRUE, SHELL
 
 
-def printTrain(cars):
+def print_train(cars):
     separator = getenv('PBT_SEPARATOR', '')
     prev_bg = None
     prev_display = True
@@ -21,13 +21,10 @@ def printTrain(cars):
         if car.display:
             if prev_bg is not None and prev_display:
                 stdout.write(
-                    "%s%s" % (
-                        car._color_start(
-                            fg=car._get_color(prev_bg, True),
-                            bg=car._get_color(car.model['root']['bg'], False),
-                            text=separator),
-                        car._color_end()
-                    )
+                    car.elem_color(
+                        fg=car.get_color(prev_bg, True),
+                        bg=car.get_color(car.model['root']['bg'], False),
+                        text=separator)
                 )
 
             prev_bg = car.model['root']['bg']
@@ -38,7 +35,7 @@ def printTrain(cars):
 
 def main():
     cars_str = getenv('PBT_CARS', "Status, Os, Hostname, Time, Dir, Git, Sign")
-    cars_names = resplit('\s*,\s*', cars_str)
+    cars_names = resplit(r'\s*,\s*', cars_str)
     cars = []
 
     for car in cars_names:
@@ -48,10 +45,13 @@ def main():
                     import_module(
                         'pbt.cars.%s' % car),
                     '%sCar' % car)())
-        except Exception as e:
-            print("Cannot import module %sCar: %s" % (car, e))
+        except TypeError:
+            stderr.write("ERROR: Cannot import module %sCar.\n" % car)
 
-    printTrain(cars)
+            if getenv('PBT_DEBUG', False) in BOOL_TRUE:
+                print_exc(file=stderr)
+
+    print_train(cars)
 
 
 if __name__ == '__main__':
