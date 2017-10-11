@@ -1,42 +1,26 @@
 Python Bullet Train
 ===================
 
-Prompt decoration for ZSH shell.
+Prompt decoration for ZSH and Bash.
 
 
 Installation
 ------------
 
-```bash
+```shell
 git clone https://github.com/jtyr/python_bullet_train.git
 cd python_bullet_train
+# For ZSH
 PROMPT='$('$(pwd)'/python_bullet_train.py $?)'
+# For Bash
+PS1='$('$(pwd)'/python_bullet_train.py $?)'
 ```
-
-It's also possible to compile the script into a binary executable file which
-should make it run about 10-20% faster. For that we will need a tool called
-[`freeze`](https://wiki.python.org/moin/Freeze) which we can find in the Python
-source tree:
-
-```bash
-git clone https://github.com/python/cpython.git -b "v$(python3 --version | grep -Po '.* \K\d.*')" --depth 1 /tmp/cpython
-```
-
-Then we can compile it:
-
-```bash
-python3 /tmp/cpython/Tools/freeze/freeze.py python_bullet_train.py
-make
-```
-
-That will create a binary file `python_bullet_train` which can be used in the
-`PROMPT` environment variable instead of the Python script as shown above.
 
 
 Usage
 -----
 
-```bash
+```shell
 ### Test the Status car
 false
 true
@@ -69,11 +53,30 @@ unset PBT_CARS
 ```
 
 
-Issues
-------
+Compilation
+-----------
 
-The conpilation process described above sometimes incorrectly recognizes where
-Python's libraries are exactly installed. Then we can get errors like this:
+It's also possible to compile the script into a binary executable file which
+should make it run about 10-20% faster. For that we will need a tool called
+[`freeze`](https://wiki.python.org/moin/Freeze) which we can find in the Python
+source tree:
+
+```shell
+git clone https://github.com/python/cpython.git -b "v$(python3 --version | grep -Po '.* \K\d.*')" --depth 1 /tmp/cpython
+```
+
+Then we can compile it:
+
+```shell
+python3 /tmp/cpython/Tools/freeze/freeze.py python_bullet_train.py
+make
+```
+
+That will create a binary file `python_bullet_train` which can be used in the
+`PROMPT` environment variable instead of the Python script as shown above.
+
+The conpilation process sometimes incorrectly recognizes where Python's libraries
+are exactly installed. Then we can get errors like this:
 
 ```
 Error: needed directory /usr/lib/python3.6/config-3.6m not found
@@ -87,13 +90,13 @@ gcc: error: /usr/lib/python3.6/config-3.6m/libpython3.6m.so: No such file or dir
 
 That can be solved by symlinks:
 
-```bash
+```shell
 ln -s /usr/lib/python3.6/config-3.6m{-x86_64-linux-gnu,}
 ```
 
 and
 
-```bash
+```shell
 ln -s /usr/lib/{libpython3.6m.so,python3.6/config-3.6m/}
 ```
 
