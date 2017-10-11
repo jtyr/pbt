@@ -4,7 +4,7 @@ from platform import system
 from pbt.core import Car
 
 
-symbols = {
+SYMBOLS = {
     'arch': '',
     'centos': '',
     'coreos': '',
@@ -32,8 +32,8 @@ def _get_os_symbol():
     name = getenv('PBT_CAR_OS_NAME', system()).lower()
     ret = None
 
-    if name and name in symbols:
-        ret = symbols[name]
+    if name and name in SYMBOLS:
+        ret = SYMBOLS[name]
     else:
         ret = "?"
 

@@ -26,7 +26,7 @@ def _get_head():
 
 
 def _is_dirty():
-    rc, out, _ = run(['git', 'status', '--porcelain'])
+    _, out, _ = run(['git', 'status', '--porcelain'])
 
     return len(out) > 0
 
