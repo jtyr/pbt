@@ -14,16 +14,13 @@ def print_train(cars):
     prev_bg = None
     prev_display = True
 
-    if SHELL == 'zsh':
-        stdout.write("%{%f%k%b%}")
-
     for car in cars:
         if car.display:
             if prev_bg is not None and prev_display:
                 stdout.write(
                     car.elem_color(
-                        fg=car.get_color(prev_bg, True),
-                        bg=car.get_color(car.model['root']['bg'], False),
+                        fg=car.get_color(prev_bg, 'fg'),
+                        bg=car.get_color(car.model['root']['bg'], 'bg'),
                         text=separator)
                 )
 
@@ -31,6 +28,11 @@ def print_train(cars):
             prev_display = car.display
 
             stdout.write(car.format())
+
+    if SHELL == 'zsh':
+        stdout.write("%{\x1b[0m%}")
+    else:
+        stdout.write("\001\x1b[0m\002")
 
 
 def main():
