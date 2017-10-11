@@ -41,7 +41,7 @@ def _get_os_symbol():
 
 
 class OsCar(Car):
-    default_root_bg = 'yellow'
+    default_root_bg = '235'
     default_root_fg = 'white'
     default_symbol_bg = default_root_bg
     default_symbol_fg = default_root_fg
