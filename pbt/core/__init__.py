@@ -57,33 +57,30 @@ class Car:
             return ''
 
         pattern = compile('{{\s*(\w+)\s*}}')
-        text = ("%s%s%s" % (
-            self._color_start('root'),
-            self.model['root']['text'],
-            self._color_end()))
+        text = ("%s%s" % (
+            self._elem_color('root'),
+            self.model['root']['text']))
 
         # Allow element nesting to the depth of 10
         for n in range(10):
             match = pattern.search(text)
 
             if match:
-                text = pattern.sub(self._elemrepl, text)
+                text = pattern.sub(self._elem_replace, text)
             else:
                 break
 
         return text
 
-    def _elemrepl(self, matchobj):
+    def _elem_replace(self, matchobj):
         if matchobj.group(1) not in self.model:
             return matchobj.group(0)
 
-        return ("%s%s%s%s" % (
-            self._color_end(),
-            self._color_start(matchobj.group(1)),
-            self._color_end(),
-            self._color_start('root')))
+        return ("%s%s" % (
+            self._elem_color(matchobj.group(1)),
+            self._elem_color('root')))
 
-    def _color_start(self, element=None, bg=None, fg=None, text=None):
+    def _elem_color(self, element=None, bg=None, fg=None, text=None):
         if element is not None:
             e = self.model[element]
             text = e['text'] if 'text' in e and element != 'root' else ''
@@ -94,10 +91,7 @@ class Car:
         if SHELL == 'zsh':
             return '%%{%s%%}%%{%s%%}%s' % (fg, bg, text)
         else:
-            return '\[%s\]\[%s\]%s' % (fg, bg, text)
-
-    def _color_end(self):
-        return '' if SHELL == 'zsh' else '\[\e[0m\]'
+            return '\001%s\002\001%s\002%s' % (fg, bg, text)
 
     def _get_color(self, name, fg):
         if fg:
@@ -116,30 +110,30 @@ class Car:
             if SHELL == 'zsh':
                 seq = '%%%s' % kind.lower()
             else:
-                seq = '\e[%s9m' % kind
+                seq = '\x1b[%s9m' % kind
         else:
             if name in self.colors:
                 # Named color
                 if SHELL == 'zsh':
                     seq = '%%%s{%s}' % (kind, self.colors[name])
                 else:
-                    seq = '\e[%s8;5;%sm' % (kind, self.colors[name])
+                    seq = '\x1b[%s8;5;%sm' % (kind, self.colors[name])
             elif match(r'^\d{1,3}$', name):
                 # Color number
                 if SHELL == 'zsh':
                     seq = '%%%s{%s}' % (kind, name)
                 else:
-                    seq = '\e[%s8;5;%sm' % (kind, name)
+                    seq = '\x1b[%s8;5;%sm' % (kind, name)
             elif (
                     match(r'^\d{1,3};\d{1,3};\d{1,3}$', name) and
                     SHELL != 'zsh'):
                 # RGB color
-                seq = '\e[%s8;2;%sm' % (kind, name)
+                seq = '\x1b[%s8;2;%sm' % (kind, name)
             else:
                 # If anything else, use default
                 if SHELL == 'zsh':
                     seq = '%%%s' % kind.lower()
                 else:
-                    seq = '\e[%s9m' % kind
+                    seq = '\x1b[%s9m' % kind
 
         return seq
