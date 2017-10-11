@@ -5,7 +5,7 @@ from pbt.core import BOOL_TRUE, Car
 
 
 def _get_dir():
-    pwd = getcwd()
+    pwd = getenv('PWD', getcwd())
     sep_repl = getenv('PBT_CAR_DIR_SEP', sep)
 
     if getenv('PBT_CAR_DIR_HOME', True) in BOOL_TRUE:
