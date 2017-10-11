@@ -16,8 +16,8 @@ class HostnameCar(Car):
 
     model = {
         'root': {
-            'bg': getenv('PBT_CAR_HOSTNAME_BG', 'dark_gray'),
-            'fg': getenv('PBT_CAR_HOSTNAME_FG', '252'),
+            'bg': getenv('PBT_CAR_HOSTNAME_BG', default_root_bg),
+            'fg': getenv('PBT_CAR_HOSTNAME_FG', default_root_fg),
             'text': getenv('PBT_CAR_HOSTNAME_FORMAT', ' {{ UserHost }} '),
         },
         'UserHost': {

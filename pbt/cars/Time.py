@@ -15,8 +15,8 @@ class TimeCar(Car):
 
     model = {
         'root': {
-            'bg': getenv('PBT_CAR_TIME_BG', 'light_blue'),
-            'fg': getenv('PBT_CAR_TIME_FG', 'light_gray'),
+            'bg': getenv('PBT_CAR_TIME_BG', default_root_bg),
+            'fg': getenv('PBT_CAR_TIME_FG', default_root_fg),
             'text': getenv('PBT_CAR_TIME_FORMAT', ' {{ DateTime }} '),
         },
         'DateTime': {
