@@ -1,6 +1,6 @@
 from os import getenv
 from os.path import basename
-from re import compile, match
+from re import compile as recompile, match as rematch
 from subprocess import Popen, PIPE
 
 
@@ -15,7 +15,7 @@ def run(args):
 
     try:
         proc = Popen(args, stdout=PIPE, stderr=PIPE)
-    except Exception as e:
+    except OSError as e:
         proc = None
         err = e
 
@@ -45,6 +45,8 @@ class Car:
         'light_cyan': 14,
         'white': 15,
     }
+    model = {}
+    display = True
 
     def __init__(self):
         if self.display is True or self.display in BOOL_TRUE:
@@ -56,13 +58,13 @@ class Car:
         if not self.display:
             return ''
 
-        pattern = compile('{{\s*(\w+)\s*}}')
+        pattern = recompile(r'{{\s*(\w+)\s*}}')
         text = ("%s%s" % (
-            self._elem_color('root'),
+            self.elem_color('root'),
             self.model['root']['text']))
 
         # Allow element nesting to the depth of 10
-        for n in range(10):
+        for _ in range(10):
             match = pattern.search(text)
 
             if match:
@@ -77,63 +79,72 @@ class Car:
             return matchobj.group(0)
 
         return ("%s%s" % (
-            self._elem_color(matchobj.group(1)),
-            self._elem_color('root')))
+            self.elem_color(matchobj.group(1)),
+            self.elem_color('root')))
 
-    def _elem_color(self, element=None, bg=None, fg=None, text=None):
+    def elem_color(self, element=None, bg=None, fg=None, text=None):
         if element is not None:
             e = self.model[element]
             text = e['text'] if 'text' in e and element != 'root' else ''
 
-            fg = self._get_color(e['fg'], True)
-            bg = self._get_color(e['bg'], False)
+            fg = self.get_color(e['fg'], True)
+            bg = self.get_color(e['bg'], False)
 
+        return '%s%s%s' % (fg, bg, text)
+
+    def get_color(self, name, fg):
         if SHELL == 'zsh':
-            return '%%{%s%%}%%{%s%%}%s' % (fg, bg, text)
+            ret = self._get_color_zsh(name, fg)
         else:
-            return '\001%s\002\001%s\002%s' % (fg, bg, text)
+            ret = self._get_color_bash(name, fg)
 
-    def _get_color(self, name, fg):
+        return ret
+
+    def _get_color_zsh(self, name, fg):
         if fg:
-            if SHELL == 'zsh':
-                kind = 'F'
-            else:
-                kind = 3
+            kind = 'F'
         else:
-            if SHELL == 'zsh':
-                kind = 'K'
-            else:
-                kind = 4
+            kind = 'K'
 
         if name == 'default':
             # Default
-            if SHELL == 'zsh':
-                seq = '%%%s' % kind.lower()
-            else:
-                seq = '\x1b[%s9m' % kind
+            seq = '%%%s' % kind.lower()
         else:
             if name in self.colors:
                 # Named color
-                if SHELL == 'zsh':
-                    seq = '%%%s{%s}' % (kind, self.colors[name])
-                else:
-                    seq = '\x1b[%s8;5;%sm' % (kind, self.colors[name])
-            elif match(r'^\d{1,3}$', name):
+                seq = '%%%s{%s}' % (kind, self.colors[name])
+            elif rematch(r'^\d{1,3}$', name):
                 # Color number
-                if SHELL == 'zsh':
-                    seq = '%%%s{%s}' % (kind, name)
-                else:
-                    seq = '\x1b[%s8;5;%sm' % (kind, name)
+                seq = '%%%s{%s}' % (kind, name)
+            else:
+                # If anything else, use default
+                seq = '%%%s' % kind.lower()
+
+        return "%%{%s%%}" % seq
+
+    def _get_color_bash(self, name, fg):
+        if fg:
+            kind = 3
+        else:
+            kind = 4
+
+        if name == 'default':
+            # Default
+            seq = '\x1b[%s9m' % kind
+        else:
+            if name in self.colors:
+                # Named color
+                seq = '\x1b[%s8;5;%sm' % (kind, self.colors[name])
+            elif rematch(r'^\d{1,3}$', name):
+                # Color number
+                seq = '\x1b[%s8;5;%sm' % (kind, name)
             elif (
-                    match(r'^\d{1,3};\d{1,3};\d{1,3}$', name) and
+                    rematch(r'^\d{1,3};\d{1,3};\d{1,3}$', name) and
                     SHELL != 'zsh'):
                 # RGB color
                 seq = '\x1b[%s8;2;%sm' % (kind, name)
             else:
                 # If anything else, use default
-                if SHELL == 'zsh':
-                    seq = '%%%s' % kind.lower()
-                else:
-                    seq = '\x1b[%s9m' % kind
+                seq = '\x1b[%s9m' % kind
 
-        return seq
+        return "\001%s\002" % seq
