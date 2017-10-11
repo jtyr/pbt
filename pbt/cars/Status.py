@@ -51,7 +51,8 @@ class StatusCar(Car):
             'fg': getenv(
                 'PBT_CAR_STATUS_CODE_FG', getenv(
                     'PBT_CAR_STATUS_FG', default_code_fg)),
-            'text': getenv('PBT_CAR_STATUS_CODE_TEXT', argv[1]),
+            'text': getenv(
+                'PBT_CAR_STATUS_CODE_TEXT', argv[1] if len(argv) > 1 else '?'),
         },
         'Error': {
             'bg': getenv(
