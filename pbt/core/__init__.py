@@ -82,26 +82,33 @@ class Car:
             self.elem_color(matchobj.group(1)),
             self.elem_color('root')))
 
-    def elem_color(self, element=None, bg=None, fg=None, text=None):
+    def elem_color(self, element=None, bg='', fg='', fm='', text=''):
         if element is not None:
             e = self.model[element]
-            text = e['text'] if 'text' in e and element != 'root' else ''
 
-            fg = self.get_color(e['fg'], True)
-            bg = self.get_color(e['bg'], False)
+            if 'text' in e and element != 'root':
+                text = e['text']
+            else:
+                text = ''
 
-        return '%s%s%s' % (fg, bg, text)
+            bg = self.get_color(e['bg'], 'bg')
+            fg = self.get_color(e['fg'], 'fg')
 
-    def get_color(self, name, fg):
+            if 'fm' in e:
+                fm = self.get_format(e['fm'])
+
+        return '%s%s%s%s' % (bg, fg, fm, text)
+
+    def get_color(self, name, bgfg):
         if SHELL == 'zsh':
-            ret = self._get_color_zsh(name, fg)
+            ret = self._get_color_zsh(name, bgfg)
         else:
-            ret = self._get_color_bash(name, fg)
+            ret = self._get_color_bash(name, bgfg)
 
         return ret
 
-    def _get_color_zsh(self, name, fg):
-        if fg:
+    def _get_color_zsh(self, name, bgfg):
+        if bgfg == 'fg':
             kind = 'F'
         else:
             kind = 'K'
@@ -122,8 +129,8 @@ class Car:
 
         return "%%{%s%%}" % seq
 
-    def _get_color_bash(self, name, fg):
-        if fg:
+    def _get_color_bash(self, name, bgfg):
+        if bgfg == 'fg':
             kind = 3
         else:
             kind = 4
@@ -148,3 +155,35 @@ class Car:
                 seq = '\x1b[%s9m' % kind
 
         return "\001%s\002" % seq
+
+    def get_format(self, name):
+        if SHELL == 'zsh':
+            ret = self._get_format_zsh(name)
+        else:
+            ret = self._get_format_bash(name)
+
+        return ret
+
+    def _get_format_zsh(self, name):
+        ret = ''
+
+        if 'bold' in name:
+            ret += "%{%B%}"
+        if 'underlined' in name:
+            ret += "%{%U%}"
+        if ret == '':
+            ret = "%{%b%}%{%u%}"
+
+        return ret
+
+    def _get_format_bash(self, name):
+        ret = ''
+
+        if 'bold' in name:
+            ret += "\001\x1b[1m\002"
+        if 'underlined' in name:
+            ret += "\001\x1b[21m\002"
+        if ret == '':
+            ret = "\001\x1b[21m\002\001\x1b[24m\002"
+
+        return ret
