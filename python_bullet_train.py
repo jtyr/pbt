@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 from importlib import import_module
 from os import getenv
@@ -36,7 +36,7 @@ def print_train(cars):
 
 
 def main():
-    cars_str = getenv('PBT_CARS', "Status, Os, Hostname, Time, Dir, Git, Sign")
+    cars_str = getenv('PBT_CARS', "Status, Os, Hostname, Dir, Git, Sign")
     cars_names = resplit(r'\s*,\s*', cars_str)
     cars = []
 
