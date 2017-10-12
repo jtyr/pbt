@@ -10,6 +10,7 @@ SYMBOLS = {
     'coreos': '',
     'darwin': '',
     'debian': '',
+    'docker': '',
     'elementary': '',
     'fedora': '',
     'freebsd': '',
