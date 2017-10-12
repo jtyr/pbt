@@ -47,7 +47,7 @@ def main():
                     import_module(
                         'pbt.cars.%s' % car),
                     '%sCar' % car)())
-        except TypeError:
+        except Exception:
             stderr.write("ERROR: Cannot import module %sCar.\n" % car)
 
             if getenv('PBT_DEBUG', False) in BOOL_TRUE:
