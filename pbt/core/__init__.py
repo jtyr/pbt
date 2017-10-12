@@ -83,6 +83,8 @@ class Car:
             self.elem_color('root')))
 
     def elem_color(self, element=None, bg='', fg='', fm='', text=''):
+        fm_end = ''
+
         if element is not None:
             e = self.model[element]
 
@@ -97,7 +99,12 @@ class Car:
             if 'fm' in e:
                 fm = self.get_format(e['fm'])
 
-        return '%s%s%s%s' % (bg, fg, fm, text)
+                if fm != self.get_format('empty'):
+                    fm_end = self.get_format(e['fm'], True)
+                else:
+                    fm = ''
+
+        return '%s%s%s%s%s' % (bg, fg, fm, text, fm_end)
 
     def get_color(self, name, bgfg):
         if SHELL == 'zsh':
@@ -156,34 +163,57 @@ class Car:
 
         return "\001%s\002" % seq
 
-    def get_format(self, name):
+    def get_format(self, name, end=False):
         if SHELL == 'zsh':
-            ret = self._get_format_zsh(name)
+            ret = self._get_format_zsh(name, end)
         else:
-            ret = self._get_format_bash(name)
+            ret = self._get_format_bash(name, end)
 
         return ret
 
-    def _get_format_zsh(self, name):
+    def _get_format_zsh(self, name, end):
         ret = ''
 
         if 'bold' in name:
-            ret += "%{%B%}"
-        if 'underlined' in name:
-            ret += "%{%U%}"
-        if ret == '':
-            ret = "%{%b%}%{%u%}"
+            c = 'B'
 
-        return ret
+            if end:
+                c = c.lower()
 
-    def _get_format_bash(self, name):
+            ret += "%%%s" % c
+
+        if 'underline' in name:
+            c = 'U'
+
+            if end:
+                c = c.lower()
+
+            ret += "%%%s" % c
+
+        if 'blink' in name:
+            c = ''
+
+            if end:
+                c = '2'
+
+            ret += "\x1b[%s5m" % c
+
+        return "%%{%s%%}" % ret
+
+    def _get_format_bash(self, name, end):
         ret = ''
+        c = ''
+
+        if end:
+            c = '2'
 
         if 'bold' in name:
-            ret += "\001\x1b[1m\002"
-        if 'underlined' in name:
-            ret += "\001\x1b[21m\002"
-        if ret == '':
-            ret = "\001\x1b[21m\002\001\x1b[24m\002"
+            ret += "\x1b[%s1m" % c
 
-        return ret
+        if 'underline' in name:
+            ret += "\x1b[%s4m" % c
+
+        if 'blink' in name:
+            ret += "\x1b[%s5m" % c
+
+        return "\001%s\002" % ret
