@@ -93,51 +93,19 @@ class Car:
             else:
                 text = ''
 
-            bg = self.get_color(e['bg'], 'bg')
-            fg = self.get_color(e['fg'], 'fg')
+            bg = self.get_color(e['bg'])
+            fg = self.get_color(e['fg'], True)
+            fm = self.get_format(e['fm'])
 
-            if 'fm' in e:
-                fm = self.get_format(e['fm'])
-
-                if fm != self.get_format('empty'):
-                    fm_end = self.get_format(e['fm'], True)
-                else:
-                    fm = ''
+            if fm != self.get_format('empty'):
+                fm_end = self.get_format(e['fm'], True)
+            else:
+                fm = ''
 
         return '%s%s%s%s%s' % (bg, fg, fm, text, fm_end)
 
-    def get_color(self, name, bgfg):
-        if SHELL == 'zsh':
-            ret = self._get_color_zsh(name, bgfg)
-        else:
-            ret = self._get_color_bash(name, bgfg)
-
-        return ret
-
-    def _get_color_zsh(self, name, bgfg):
-        if bgfg == 'fg':
-            kind = 'F'
-        else:
-            kind = 'K'
-
-        if name == 'default':
-            # Default
-            seq = '%%%s' % kind.lower()
-        else:
-            if name in self.colors:
-                # Named color
-                seq = '%%%s{%s}' % (kind, self.colors[name])
-            elif rematch(r'^\d{1,3}$', name):
-                # Color number
-                seq = '%%%s{%s}' % (kind, name)
-            else:
-                # If anything else, use default
-                seq = '%%%s' % kind.lower()
-
-        return "%%{%s%%}" % seq
-
-    def _get_color_bash(self, name, bgfg):
-        if bgfg == 'fg':
+    def get_color(self, name, is_fg=False):
+        if is_fg:
             kind = 3
         else:
             kind = 4
@@ -152,68 +120,39 @@ class Car:
             elif rematch(r'^\d{1,3}$', name):
                 # Color number
                 seq = '\x1b[%s8;5;%sm' % (kind, name)
-            elif (
-                    rematch(r'^\d{1,3};\d{1,3};\d{1,3}$', name) and
-                    SHELL != 'zsh'):
+            elif rematch(r'^\d{1,3};\d{1,3};\d{1,3}$', name):
                 # RGB color
                 seq = '\x1b[%s8;2;%sm' % (kind, name)
             else:
                 # If anything else, use default
                 seq = '\x1b[%s9m' % kind
 
-        return "\001%s\002" % seq
-
-    def get_format(self, name, end=False):
         if SHELL == 'zsh':
-            ret = self._get_format_zsh(name, end)
+            ret = "%%{%s%%}" % seq
         else:
-            ret = self._get_format_bash(name, end)
+            ret = "\001%s\002" % seq
 
         return ret
 
-    def _get_format_zsh(self, name, end):
-        ret = ''
-
-        if 'bold' in name:
-            c = 'B'
-
-            if end:
-                c = c.lower()
-
-            ret += "%%%s" % c
-
-        if 'underline' in name:
-            c = 'U'
-
-            if end:
-                c = c.lower()
-
-            ret += "%%%s" % c
-
-        if 'blink' in name:
-            c = ''
-
-            if end:
-                c = '2'
-
-            ret += "\x1b[%s5m" % c
-
-        return "%%{%s%%}" % ret
-
-    def _get_format_bash(self, name, end):
-        ret = ''
+    def get_format(self, name, end=False):
+        seq = ''
         c = ''
 
         if end:
             c = '2'
 
         if 'bold' in name:
-            ret += "\x1b[%s1m" % c
+            seq += "\x1b[%s1m" % c
 
         if 'underline' in name:
-            ret += "\x1b[%s4m" % c
+            seq += "\x1b[%s4m" % c
 
         if 'blink' in name:
-            ret += "\x1b[%s5m" % c
+            seq += "\x1b[%s5m" % c
 
-        return "\001%s\002" % ret
+        if SHELL == 'zsh':
+            ret = "%%{%s%%}" % seq
+        else:
+            ret = "\001%s\002" % seq
+
+        return ret

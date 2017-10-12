@@ -19,8 +19,8 @@ def print_train(cars):
             if prev_bg is not None and prev_display:
                 stdout.write(
                     car.elem_color(
-                        fg=car.get_color(prev_bg, 'fg'),
-                        bg=car.get_color(car.model['root']['bg'], 'bg'),
+                        fg=car.get_color(prev_bg, True),
+                        bg=car.get_color(car.model['root']['bg']),
                         text=separator)
                 )
 

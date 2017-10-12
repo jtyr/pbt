@@ -9,7 +9,6 @@ Installation
 
 ```shell
 git clone https://github.com/jtyr/python_bullet_train.git ~/python_bullet_train
-cd ~/python_bullet_train
 # For ZSH
 PROMPT='$(~/python_bullet_train/python_bullet_train.py $?)'
 # For Bash
