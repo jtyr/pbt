@@ -16,6 +16,11 @@ PROMPT='$('$(pwd)'/python_bullet_train.py $?)'
 PS1='$('$(pwd)'/python_bullet_train.py $?)'
 ```
 
+In order to display all characters of the prompt correctly, the shell should
+support UTF-8 and [Nerd](https://github.com/ryanoasis/nerd-fonts) (or at least
+[Powerline](https://github.com/ryanoasis/powerline-extra-symbols) and
+[Devicons](https://vorillaz.github.io/devicons/)) fonts should be installed.
+
 
 Usage
 -----
