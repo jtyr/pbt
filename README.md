@@ -8,18 +8,19 @@ Installation
 ------------
 
 ```shell
-git clone https://github.com/jtyr/python_bullet_train.git
-cd python_bullet_train
+git clone https://github.com/jtyr/python_bullet_train.git ~/python_bullet_train
+cd ~/python_bullet_train
 # For ZSH
-PROMPT='$('$(pwd)'/python_bullet_train.py $?)'
+PROMPT='$(~/python_bullet_train/python_bullet_train.py $?)'
 # For Bash
-PS1='$('$(pwd)'/python_bullet_train.py $?)'
+PS1='$(~/python_bullet_train/python_bullet_train.py $?)'
 ```
 
 In order to display all characters of the prompt correctly, the shell should
 support UTF-8 and [Nerd](https://github.com/ryanoasis/nerd-fonts) (or at least
 [Powerline](https://github.com/ryanoasis/powerline-extra-symbols) and
-[Devicons](https://vorillaz.github.io/devicons/)) fonts should be installed.
+[Devicons](https://vorillaz.github.io/devicons/)) fonts should be installed and
+set in the terminal application.
 
 
 Usage
