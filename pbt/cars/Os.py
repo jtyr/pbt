@@ -44,13 +44,16 @@ def _get_os_symbol():
 class OsCar(Car):
     default_root_bg = '235'
     default_root_fg = 'white'
+    default_root_fm = 'none'
     default_symbol_bg = default_root_bg
     default_symbol_fg = default_root_fg
+    default_symbol_fm = default_root_fm
 
     model = {
         'root': {
             'bg': getenv('PBT_CAR_OS_BG', default_root_bg),
             'fg': getenv('PBT_CAR_OS_FG', default_root_fg),
+            'fm': getenv('PBT_CAR_OS_FG', default_root_fm),
             'text': getenv('PBT_CAR_OS_FORMAT', ' {{ Symbol }} '),
         },
         'Symbol': {
@@ -60,6 +63,9 @@ class OsCar(Car):
             'fg': getenv(
                 'PBT_CAR_OS_SYMBOL_FG', getenv(
                     'PBT_CAR_OS_FG', default_symbol_fg)),
+            'fm': getenv(
+                'PBT_CAR_OS_SYMBOL_FM', getenv(
+                    'PBT_CAR_OS_FM', default_symbol_fm)),
             'text': getenv(
                 'PBT_CAR_OS_SYMBOL_TEXT', _get_os_symbol()),
         },
