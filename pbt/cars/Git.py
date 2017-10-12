@@ -9,8 +9,8 @@ def _is_git_dir():
     return rc == 0
 
 
-def _get_head():
-    if not _DISPLAY:
+def _get_head(display):
+    if not display:
         return '-'
 
     rc, out, _ = run(['git', 'symbolic-ref', 'HEAD'])
@@ -29,9 +29,6 @@ def _is_dirty():
     _, out, _ = run(['git', 'status', '--porcelain'])
 
     return len(out) > 0
-
-
-_DISPLAY = getenv('PBT_CAR_DIR_DISPLAY', _is_git_dir())
 
 
 class GitCar(Car):
@@ -53,6 +50,8 @@ class GitCar(Car):
     default_clean_bg = default_root_bg
     default_clean_fg = 'green'
     default_clean_fm = default_root_fm
+
+    display = getenv('PBT_CAR_GIT_DISPLAY', _is_git_dir())
 
     model = {
         'root': {
@@ -85,7 +84,7 @@ class GitCar(Car):
             'fm': getenv(
                 'PBT_CAR_GIT_HEAD_FM', getenv(
                     'PBT_CAR_GIT_FM', default_head_fm)),
-            'text': getenv('PBT_CAR_GIT_HEAD_TEXT', _get_head()),
+            'text': getenv('PBT_CAR_GIT_HEAD_TEXT', _get_head(display)),
         },
         'Status': {
             'bg': getenv(
@@ -126,5 +125,3 @@ class GitCar(Car):
             'text': getenv('PBT_CAR_GIT_CLEAN_TEXT', '✔'),
         },
     }
-
-    display = _DISPLAY
