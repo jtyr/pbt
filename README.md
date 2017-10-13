@@ -71,6 +71,19 @@ function pbt_exectime_pre() {
 function pbt_exectime_post() {
     if [ -z $PBT_CAR_EXECTIME__TMP ]; then
         export PBT_CAR_EXECTIME_SECS=$(date '+%s.%N')
+    else
+        # This "else" part is only necessary if you want to ring the system
+        # bell if the command is taking more that PBT_CAR_EXECTIME_BELL
+        # seconds.
+        local BELL=${PBT_CAR_EXECTIME_BELL:-0}
+
+        if (( $BELL > 0 )); then
+            local EXECS=$(echo "$(date '+%s.%N') - $PBT_CAR_EXECTIME_SECS" | bc)
+
+            if (( $EXECS > $BELL )); then
+                echo -en '\a'
+            fi
+        fi
     fi
 
     unset PBT_CAR_EXECTIME__TMP
@@ -79,7 +92,7 @@ preexec_functions+=(pbt_exectime_pre)
 precmd_functions+=(pbt_exectime_post)
 
 # For Bash
-function pbt_exectime() {
+function pbt_exectime_pre() {
     if [ -z $PBT_CAR_EXECTIME__TMP ]; then
       return
     fi
@@ -88,8 +101,24 @@ function pbt_exectime() {
 
     export PBT_CAR_EXECTIME_SECS=$(date '+%s.%N')
 }
-PROMPT_COMMAND='PBT_CAR_EXECTIME__TMP=1'
-trap 'pbt_exectime' DEBUG
+function pbt_exectime_post() {
+    PBT_CAR_EXECTIME__TMP=1
+
+    # The rest of the function is only necessary if you want to ring the system
+    # bell if the command is taking more that PBT_CAR_EXECTIME_BELL seconds.
+    local SECS=${PBT_CAR_EXECTIME_SECS:-0}
+    local BELL=${PBT_CAR_EXECTIME_BELL:-0}
+
+    if (( $(echo "$SECS > 0" | bc) )) && (( $BELL > 0 )); then
+        local EXECS=$(echo "$(date '+%s.%N') - $PBT_CAR_EXECTIME_SECS" | bc)
+
+        if (( $(echo "$EXECS > $BELL" | bc) )); then
+            echo -en '\a'
+        fi
+    fi
+}
+trap 'pbt_exectime_pre' DEBUG
+PROMPT_COMMAND='pbt_exectime_post'
 ```
 
 
