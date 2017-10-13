@@ -68,7 +68,7 @@ class HostnameCar(Car):
                     'PBT_CAR_HOSTNAME_USERHOST_FM', getenv(
                         'PBT_CAR_HOSTNAME_FM', default_host_fm))),
             'text': getenv(
-                'PBT_CAR_HOSTNAME_HOSTNAME_TEXT', uname()[1]),
+                'PBT_CAR_HOSTNAME_HOSTNAME_TEXT', uname()[1].split('.')[0]),
         },
     }
 
