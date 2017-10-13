@@ -15,6 +15,8 @@ PROMPT='$(~/python_bullet_train/python_bullet_train.py $?)'
 PS1='$(~/python_bullet_train/python_bullet_train.py $?)'
 ```
 
+The `python_bullet_train.py` requires Python v3 to be installed.
+
 In order to display all characters of the prompt correctly, the shell should
 support UTF-8 and [Nerd](https://github.com/ryanoasis/nerd-fonts) (or at least
 [Powerline](https://github.com/ryanoasis/powerline-extra-symbols) and
