@@ -59,6 +59,39 @@ export PBT_CARS="Status, Hostname, Dir, Sign"
 unset PBT_CARS
 ```
 
+In order to use the `ExecTime` car, the following must be set for the given
+shell:
+
+```shell
+# For ZSH
+function pbt_exectime_pre() {
+    export PBT_CAR_EXECTIME_SECS=$(date '+%s.%N')
+    PBT_CAR_EXECTIME__TMP=1
+}
+function pbt_exectime_post() {
+    if [ -z $PBT_CAR_EXECTIME__TMP ]; then
+        export PBT_CAR_EXECTIME_SECS=$(date '+%s.%N')
+    fi
+
+    unset PBT_CAR_EXECTIME__TMP
+}
+preexec_functions+=(pbt_exectime_pre)
+precmd_functions+=(pbt_exectime_post)
+
+# For Bash
+function pbt_exectime() {
+    if [ -z $PBT_CAR_EXECTIME__TMP ]; then
+      return
+    fi
+
+    unset PBT_CAR_EXECTIME__TMP
+
+    export PBT_CAR_EXECTIME_SECS=$(date '+%s.%N')
+}
+PROMPT_COMMAND='PBT_CAR_EXECTIME__TMP=1'
+trap 'pbt_exectime' DEBUG
+```
+
 
 Compilation
 -----------
