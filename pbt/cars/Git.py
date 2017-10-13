@@ -11,24 +11,55 @@ def _is_git_dir():
 
 def _get_head(display):
     if not display:
-        return '-'
+        return ''
 
+    # Get branch name
     rc, out, _ = run(['git', 'symbolic-ref', 'HEAD'])
 
     if rc:
+        # Get tag name
         rc, out, _ = run(
             ['git', 'describe', '--tags', '--exact-match', 'HEAD'])
 
         if rc:
+            # Get commit ID
             rc, out, _ = run(['git', 'rev-parse', '--short', 'HEAD'])
 
     return out.replace('refs/heads/', '')
 
 
-def _is_dirty():
+def _is_dirty(display):
+    if not display:
+        return False
+
     _, out, _ = run(['git', 'status', '--porcelain'])
 
     return len(out) > 0
+
+
+def _compare_remote(display, ahead):
+    if not display:
+        return False
+
+    ret = False
+
+    # Get branch name
+    rc, branch, _ = run(['git', 'symbolic-ref', 'HEAD'])
+
+    if not rc:
+        branch = branch.replace('refs/heads/', '')
+
+        if ahead:
+            direction = 'origin/%s..HEAD' % branch
+        else:
+            direction = 'HEAD..origin/%s' % branch
+
+        rc, out, _ = run(['git', 'rev-list', direction])
+
+        if not rc and len(out) > 0:
+            ret = True
+
+    return ret
 
 
 class GitCar(Car):
@@ -50,6 +81,12 @@ class GitCar(Car):
     default_clean_bg = default_root_bg
     default_clean_fg = 'green'
     default_clean_fm = default_root_fm
+    default_ahead_bg = default_root_bg
+    default_ahead_fg = default_root_fg
+    default_ahead_fm = default_root_fm
+    default_behind_bg = default_root_bg
+    default_behind_fg = default_root_fg
+    default_behind_fm = default_root_fm
 
     display = getenv('PBT_CAR_GIT_DISPLAY', _is_git_dir())
 
@@ -60,7 +97,7 @@ class GitCar(Car):
             'fm': getenv('PBT_CAR_GIT_FM', default_root_fm),
             'text': getenv(
                 'PBT_CAR_GIT_FORMAT',
-                ' {{ Icon }} {{ Head }} {{ Status }} '),
+                ' {{ Icon }} {{ Head }} {{ Status }}{{ Ahead }}{{ Behind }} '),
         },
         'Icon': {
             'bg': getenv(
@@ -98,7 +135,7 @@ class GitCar(Car):
                     'PBT_CAR_GIT_FM', default_status_fm)),
             'text': getenv(
                 'PBT_CAR_GIT_STATUS_FORMAT',
-                '{{ ' + ('Dirty' if _is_dirty() else 'Clean') + ' }}'),
+                '{{ ' + ('Dirty' if _is_dirty(display) else 'Clean') + ' }}'),
         },
         'Dirty': {
             'bg': getenv(
@@ -123,5 +160,37 @@ class GitCar(Car):
                 'PBT_CAR_GIT_CLEAN_FM', getenv(
                     'PBT_CAR_GIT_FM', default_clean_fm)),
             'text': getenv('PBT_CAR_GIT_CLEAN_TEXT', '✔'),
+        },
+        'Ahead': {
+            'bg': getenv(
+                'PBT_CAR_GIT_AHEAD_BG', getenv(
+                    'PBT_CAR_GIT_BG', default_ahead_bg)),
+            'fg': getenv(
+                'PBT_CAR_GIT_AHEAD_FG', getenv(
+                    'PBT_CAR_GIT_FG', default_ahead_fg)),
+            'fm': getenv(
+                'PBT_CAR_GIT_AHEAD_FM', getenv(
+                    'PBT_CAR_GIT_FM', default_ahead_fm)),
+            'text': getenv(
+                'PBT_CAR_GIT_AHEAD_TEXT',
+                getenv('PBT_CAR_GIT_BEHIND_SYMBOL', ' ⬆') if (
+                    _compare_remote(display, True)
+                ) else ''),
+        },
+        'Behind': {
+            'bg': getenv(
+                'PBT_CAR_GIT_BEHIND_BG', getenv(
+                    'PBT_CAR_GIT_BG', default_behind_bg)),
+            'fg': getenv(
+                'PBT_CAR_GIT_BEHIND_FG', getenv(
+                    'PBT_CAR_GIT_FG', default_behind_fg)),
+            'fm': getenv(
+                'PBT_CAR_GIT_BEHIND_FM', getenv(
+                    'PBT_CAR_GIT_FM', default_behind_fm)),
+            'text': getenv(
+                'PBT_CAR_GIT_BEHIND_TEXT',
+                getenv('PBT_CAR_GIT_BEHIND_SYMBOL', ' ⬇') if (
+                    _compare_remote(display, False)
+                ) else ''),
         },
     }
