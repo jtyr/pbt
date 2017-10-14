@@ -1,9 +1,10 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 from importlib import import_module
 from os import getenv
 from re import split as resplit
-from sys import stderr, stdout
+from sys import stderr, stdout, version_info
 from traceback import print_exc
 
 from pbt.core import BOOL_TRUE, SHELL
@@ -36,6 +37,11 @@ def print_train(cars):
 
 
 def main():
+    if version_info < (3, 0):
+        import sys
+        reload(sys)
+        sys.setdefaultencoding('utf8')
+
     cars_str = getenv('PBT_CARS', "Status, Os, Hostname, Dir, Git, Sign")
     cars_names = resplit(r'\s*,\s*', cars_str)
     cars = []

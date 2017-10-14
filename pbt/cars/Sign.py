@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from os import getenv, getuid
 
 from pbt.core import Car

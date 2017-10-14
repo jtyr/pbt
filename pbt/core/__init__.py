@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from os import getenv
 from os.path import basename
 from re import compile as recompile, match as rematch

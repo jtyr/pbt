@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from time import gmtime, strftime
 from os import getenv
 

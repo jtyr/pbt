@@ -1,21 +1,33 @@
 Python Bullet Train
 ===================
 
-Prompt decoration for ZSH and Bash.
+Prompt decoration for ZSH and Bash. Inspired by the [Oh My
+ZSH](https://github.com/robbyrussell/oh-my-zsh) [Bullet
+Train](https://github.com/caiogondim/bullet-train.zsh) theme.
 
 
 Installation
 ------------
 
+Via PyPi:
+
 ```shell
-git clone https://github.com/jtyr/python_bullet_train.git ~/python_bullet_train
+pip install pbt
 # For ZSH
-PROMPT='$(~/python_bullet_train/python_bullet_train.py $?)'
+PROMPT='$(pbt $?)'
 # For Bash
-PS1='$(~/python_bullet_train/python_bullet_train.py $?)'
+PS1='$(pbt $?)'
 ```
 
-The `python_bullet_train.py` requires Python v3 to be installed.
+or directly from GitHub:
+
+```shell
+git clone https://github.com/jtyr/python-bullettrain.git ~/pbt
+# For ZSH
+PROMPT='$(~/pbt/pbt.py $?)'
+# For Bash
+PS1='$(~/pbt/pbt.py $?)'
+```
 
 In order to display all characters of the prompt correctly, the shell should
 support UTF-8 and [Nerd](https://github.com/ryanoasis/nerd-fonts) (or at least
@@ -32,7 +44,7 @@ Usage
 false
 true
 ### Test Sign car
-sudo ./python_bullet_train.py
+sudo ./pbt
 ### Test the Dir car
 cd /
 cd ~
@@ -59,66 +71,15 @@ export PBT_CARS="Status, Hostname, Dir, Sign"
 unset PBT_CARS
 ```
 
-In order to use the `ExecTime` car, the following must be set for the given
-shell:
+In order to allow the `ExecTime` car to calculate the execution time of every
+command executed by the shell, the following must be placed into the shell
+profile file:
 
 ```shell
 # For ZSH
-function pbt_exectime_pre() {
-    export PBT_CAR_EXECTIME_SECS=$(date '+%s.%N')
-    PBT_CAR_EXECTIME__TMP=1
-}
-function pbt_exectime_post() {
-    if [ -z $PBT_CAR_EXECTIME__TMP ]; then
-        export PBT_CAR_EXECTIME_SECS=$(date '+%s.%N')
-    else
-        # This "else" part is only necessary if you want to ring the system
-        # bell if the command is taking more that PBT_CAR_EXECTIME_BELL
-        # seconds.
-        local BELL=${PBT_CAR_EXECTIME_BELL:-0}
-
-        if (( $BELL > 0 )); then
-            local EXECS=$(echo "$(date '+%s.%N') - $PBT_CAR_EXECTIME_SECS" | bc)
-
-            if (( $EXECS > $BELL )); then
-                echo -en '\a'
-            fi
-        fi
-    fi
-
-    unset PBT_CAR_EXECTIME__TMP
-}
-preexec_functions+=(pbt_exectime_pre)
-precmd_functions+=(pbt_exectime_post)
-
+source /path/to/the/pbt/sources/ExecTime.zsh
 # For Bash
-function pbt_exectime_pre() {
-    if [ -z $PBT_CAR_EXECTIME__TMP ]; then
-      return
-    fi
-
-    unset PBT_CAR_EXECTIME__TMP
-
-    export PBT_CAR_EXECTIME_SECS=$(date '+%s.%N')
-}
-function pbt_exectime_post() {
-    PBT_CAR_EXECTIME__TMP=1
-
-    # The rest of the function is only necessary if you want to ring the system
-    # bell if the command is taking more that PBT_CAR_EXECTIME_BELL seconds.
-    local SECS=${PBT_CAR_EXECTIME_SECS:-0}
-    local BELL=${PBT_CAR_EXECTIME_BELL:-0}
-
-    if (( $(echo "$SECS > 0" | bc) )) && (( $BELL > 0 )); then
-        local EXECS=$(echo "$(date '+%s.%N') - $PBT_CAR_EXECTIME_SECS" | bc)
-
-        if (( $(echo "$EXECS > $BELL" | bc) )); then
-            echo -en '\a'
-        fi
-    fi
-}
-trap 'pbt_exectime_pre' DEBUG
-PROMPT_COMMAND='pbt_exectime_post'
+source /path/to/the/pbt/sources/ExecTime.bash
 ```
 
 
@@ -131,18 +92,18 @@ should make it run about 10-20% faster. For that we will need a tool called
 source tree:
 
 ```shell
-git clone https://github.com/python/cpython.git -b "v$(python3 --version | grep -Po '.* \K\d.*')" --depth 1 /tmp/cpython
+git clone https://github.com/python/cpython.git -b "v$(python --version 2>&1 | grep -Po '.* \K\d.*')" --depth 1 /tmp/cpython
 ```
 
 Then we can compile it:
 
 ```shell
-python3 /tmp/cpython/Tools/freeze/freeze.py python_bullet_train.py
+python /tmp/cpython/Tools/freeze/freeze.py pbt.py
 make
 ```
 
-That will create a binary file `python_bullet_train` which can be used in the
-`PROMPT` environment variable instead of the Python script as shown above.
+That will create a binary file `pbt` which can be used in the `PROMPT`
+environment variable instead of the Python script as shown above.
 
 The conpilation process sometimes incorrectly recognizes where Python's libraries
 are exactly installed. Then we can get errors like this:

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from os import getcwd, getenv, sep
 from os.path import expanduser
 

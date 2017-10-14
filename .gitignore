@@ -3,6 +3,10 @@ __pycache__
 *.c
 *.c~
 *.o
+MANIFEST
 Makefile
-python_bullet_train
+build
+dist
 freeze.py
+pbt
+tmp
