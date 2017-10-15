@@ -7,9 +7,9 @@ from pbt.core import Car
 
 
 class TimeCar(Car):
-    default_root_bg = 'light_blue'
-    default_root_fg = 'light_gray'
-    default_root_fm = 'none'
+    default_root_bg = getenv('PBT_CAR_BG', 'light_blue')
+    default_root_fg = getenv('PBT_CAR_FG', 'light_gray')
+    default_root_fm = getenv('PBT_CAR_FM', 'none')
     default_datetime_bg = default_root_bg
     default_datetime_fg = default_root_fg
     default_datetime_fm = default_root_fm
@@ -75,3 +75,5 @@ class TimeCar(Car):
     }
 
     display = getenv('PBT_CAR_TIME_DISPLAY', True)
+    wrap = getenv('PBT_CAR_TIME_WRAP', False)
+    sep = getenv('PBT_CAR_TIME_SEP', None)

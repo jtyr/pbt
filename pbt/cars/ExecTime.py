@@ -27,9 +27,9 @@ def _get_time():
 
 
 class ExecTimeCar(Car):
-    default_root_bg = 'light_gray'
-    default_root_fg = 'black'
-    default_root_fm = 'none'
+    default_root_bg = getenv('PBT_CAR_BG', 'light_gray')
+    default_root_fg = getenv('PBT_CAR_BF', 'black')
+    default_root_fm = getenv('PBT_CAR_FM', 'none')
     default_exectime_bg = default_root_bg
     default_exectime_fg = default_root_fg
     default_exectime_fm = default_root_fm
@@ -38,7 +38,7 @@ class ExecTimeCar(Car):
         'root': {
             'bg': getenv('PBT_CAR_EXECTIME_BG', default_root_bg),
             'fg': getenv('PBT_CAR_EXECTIME_FG', default_root_fg),
-            'fm': getenv('PBT_CAR_EXECTIME_FG', default_root_fm),
+            'fm': getenv('PBT_CAR_EXECTIME_FM', default_root_fm),
             'text': getenv('PBT_CAR_EXECTIME_FORMAT', ' {{ Time }} '),
         },
         'Time': {
@@ -56,3 +56,5 @@ class ExecTimeCar(Car):
     }
 
     display = getenv('PBT_CAR_EXECTIME_DISPLAY', True)
+    wrap = getenv('PBT_CAR_EXECTIME_WRAP', False)
+    sep = getenv('PBT_CAR_EXECTIME_SEP', None)

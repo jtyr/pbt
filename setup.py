@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+###
+# python ./setup.py sdist
+# twine upload dist/*
+###
+
 from distutils.core import setup
 import os
 import shutil
@@ -16,11 +21,11 @@ if os.path.exists('pbt.py'):
 
 setup(
     name='pbt',
-    version='1.0.2',
+    version='1.0.7',
     description='Prompt decoration for ZSH and Bash written in Python',
     author='Jiri Tyr',
     author_email='jiri.tyr@gmail.com',
-    url='http://github.com/jtyr/python-bullettrain',
+    url='http://github.com/jtyr/pbt',
     license='MIT',
     keywords='shell bash zsh bullet train prompt',
     classifiers=[
@@ -41,6 +46,8 @@ setup(
         ('share/pbt/sources', [
             'sources/ExecTime.bash',
             'sources/ExecTime.zsh']),
-        ('share/doc/pbt', ['LICENSE', 'README.md'])
+        ('share/pbt/themes', [
+            'themes/square_brackets_multiline']),
+        ('share/doc/pbt', ['LICENSE', 'README.md']),
     ],
 )

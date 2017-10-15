@@ -1,5 +1,5 @@
-Python Bullet Train
-===================
+Python Bullet Train (PBT)
+=========================
 
 Prompt decoration for ZSH and Bash. Inspired by the [Oh My
 ZSH](https://github.com/robbyrussell/oh-my-zsh) [Bullet
@@ -9,7 +9,13 @@ Train](https://github.com/caiogondim/bullet-train.zsh) theme.
 Installation
 ------------
 
-Via PyPi:
+In Arch Linux:
+
+```shell
+yaourt -S pbt-git
+```
+
+or via PyPi:
 
 ```shell
 pip install pbt
@@ -43,13 +49,19 @@ Usage
 ### Test the Status car
 false
 true
-### Test Sign car
-sudo ./pbt
 ### Test the Dir car
 cd /
 cd ~
-cd /usr/bin
+cd /usr/share/doc/sudo
+# Display only last 3 elements of the path
+export PBT_CAR_DIR_DEPTH=3
+# Display full path
+export PBT_CAR_DIR_DEPTH=9999
+# Show only last element of the path
+unset PBT_CAR_DIR_DEPTH
 ### Test Time car
+# Add the Time car into the train
+export PBT_CARS="Status, Os, Time, Hostname, Dir, Sign"
 # Set 12h format
 export PBT_CAR_TIME_TIME_FORMAT="%I:%M:%S %p"
 # Change background color of the all car
@@ -64,11 +76,11 @@ unset export PBT_CAR_TIME_BG
 export PBT_CAR_TIME_FORMAT=" {{ Time }} "
 # Reset the format of the car
 unset PBT_CAR_TIME_FORMAT
-### Train
-# Remove the Time car from the train
-export PBT_CARS="Status, Hostname, Dir, Sign"
 # Reset the original train
 unset PBT_CARS
+### Themes
+# Load theme
+source themes/square_brackets_multiline
 ```
 
 In order to allow the `ExecTime` car to calculate the execution time of every

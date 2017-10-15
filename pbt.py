@@ -7,7 +7,7 @@ from re import split as resplit
 from sys import stderr, stdout, version_info
 from traceback import print_exc
 
-from pbt.core import BOOL_TRUE, SHELL
+from pbt.core import BOOL_TRUE, Car, SHELL
 
 
 def print_train(cars):
@@ -15,15 +15,32 @@ def print_train(cars):
     prev_bg = None
     prev_display = True
 
+    if getenv('PBT_BEGINNING_TEXT', ''):
+        fake_car = Car()
+
+        stdout.write(
+            fake_car.elem_color(
+                bg=fake_car.get_color(getenv('PBT_BEGINNING_BG', 'default')),
+                fg=fake_car.get_color(getenv('PBT_BEGINNING_FG', 'default')),
+                fm=fake_car.get_color(getenv('PBT_BEGINNING_FM', 'none')),
+                text=getenv('PBT_BEGINNING_TEXT')))
+
     for car in cars:
         if car.display:
             if prev_bg is not None and prev_display:
+                if car.wrap:
+                    bg = car.get_color('default')
+                else:
+                    bg = car.get_color(car.model['root']['bg'])
+
                 stdout.write(
                     car.elem_color(
                         fg=car.get_color(prev_bg, True),
-                        bg=car.get_color(car.model['root']['bg']),
-                        text=separator)
-                )
+                        bg=bg,
+                        text=separator if car.sep is None else car.sep))
+
+                if car.wrap:
+                    stdout.write("\n")
 
             prev_bg = car.model['root']['bg']
             prev_display = car.display

@@ -8,5 +8,4 @@ Makefile
 build
 dist
 freeze.py
-pbt
 tmp

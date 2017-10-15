@@ -7,9 +7,9 @@ from pbt.core import Car
 
 
 class HostnameCar(Car):
-    default_root_bg = 'dark_gray'
-    default_root_fg = '252'
-    default_root_fm = 'none'
+    default_root_bg = getenv('PBT_CAR_BG', 'dark_gray')
+    default_root_fg = getenv('PBT_CAR_FG', '252')
+    default_root_fm = getenv('PBT_CAR_FM', 'none')
     default_userhost_bg = default_root_bg
     default_userhost_fg = default_root_fg
     default_userhost_fm = default_root_fm
@@ -58,15 +58,15 @@ class HostnameCar(Car):
         },
         'Host': {
             'bg': getenv(
-                'PBT_CAR_HOSTNAME_HOSTNAME_BG', getenv(
+                'PBT_CAR_HOSTNAME_HOST_BG', getenv(
                     'PBT_CAR_HOSTNAME_USERHOST_BG', getenv(
                         'PBT_CAR_HOSTNAME_BG', default_host_bg))),
             'fg': getenv(
-                'PBT_CAR_HOSTNAME_HOSTNAME_FG', getenv(
+                'PBT_CAR_HOSTNAME_HOST_FG', getenv(
                     'PBT_CAR_HOSTNAME_USERHOST_FG', getenv(
                         'PBT_CAR_HOSTNAME_FG', default_host_fg))),
             'fm': getenv(
-                'PBT_CAR_HOSTNAME_HOSTNAME_FM', getenv(
+                'PBT_CAR_HOSTNAME_HOST_FM', getenv(
                     'PBT_CAR_HOSTNAME_USERHOST_FM', getenv(
                         'PBT_CAR_HOSTNAME_FM', default_host_fm))),
             'text': getenv(
@@ -75,3 +75,5 @@ class HostnameCar(Car):
     }
 
     display = getenv('PBT_CAR_HOSTNAME_DISPLAY', True)
+    wrap = getenv('PBT_CAR_HOSTNAME_WRAP', False)
+    sep = getenv('PBT_CAR_HOSTNAME_SEP', None)

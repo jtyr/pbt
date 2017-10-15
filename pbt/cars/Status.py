@@ -22,9 +22,15 @@ class StatusCar(Car):
     default_ok_bg = 'green'
     default_ok_fg = 'light_gray'
     default_ok_fm = 'none'
-    default_root_bg = default_ok_bg if _is_ok() else default_error_bg
-    default_root_fg = default_ok_fg if _is_ok() else default_error_fg
-    default_root_fm = default_ok_fg if _is_ok() else default_error_fm
+    default_root_bg = getenv(
+        'PBT_CAR_BG',
+        default_ok_bg if _is_ok() else default_error_bg)
+    default_root_fg = getenv(
+        'PBT_CAR_FG',
+        default_ok_fg if _is_ok() else default_error_fg)
+    default_root_fm = getenv(
+        'PBT_CAR_FM',
+        default_ok_fg if _is_ok() else default_error_fm)
     default_symbol_bg = default_root_bg
     default_symbol_fg = default_root_fg
     default_symbol_fm = default_root_fm
@@ -101,3 +107,5 @@ class StatusCar(Car):
     }
 
     display = getenv('PBT_CAR_STATUS_DISPLAY', False if _is_ok() else True)
+    wrap = getenv('PBT_CAR_STATUS_WRAP', False)
+    sep = getenv('PBT_CAR_STATUS_SEP', None)

@@ -6,9 +6,9 @@ from pbt.core import Car
 
 
 class SignCar(Car):
-    default_root_bg = 'default'
-    default_root_fg = 'default'
-    default_root_fm = 'none'
+    default_root_bg = getenv('PBT_CAR_BG', 'default')
+    default_root_fg = getenv('PBT_CAR_FG', 'default')
+    default_root_fm = getenv('PBT_CAR_FM', 'none')
     default_symbol_bg = default_root_bg
     default_symbol_fg = default_root_fg
     default_symbol_fm = 'bold'
@@ -65,3 +65,5 @@ class SignCar(Car):
     }
 
     display = getenv('PBT_CAR_SIGN_DISPLAY', True)
+    wrap = getenv('PBT_CAR_SIGN_WRAP', False)
+    sep = getenv('PBT_CAR_SIGN_SEP', None)

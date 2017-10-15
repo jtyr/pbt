@@ -65,9 +65,9 @@ def _compare_remote(display, ahead):
 
 
 class GitCar(Car):
-    default_root_bg = 'light_gray'
-    default_root_fg = 'black'
-    default_root_fm = 'none'
+    default_root_bg = getenv('PBT_CAR_BG', 'light_gray')
+    default_root_fg = getenv('PBT_CAR_FG', 'black')
+    default_root_fm = getenv('PBT_CAR_FM', 'none')
     default_icon_bg = default_root_bg
     default_icon_fg = default_root_fg
     default_icon_fm = default_root_fm
@@ -196,3 +196,6 @@ class GitCar(Car):
                 ) else ''),
         },
     }
+
+    wrap = getenv('PBT_CAR_GIT_WRAP', False)
+    sep = getenv('PBT_CAR_GIT_SEP', None)

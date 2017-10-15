@@ -29,9 +29,9 @@ def _get_dir():
 
 
 class DirCar(Car):
-    default_root_bg = 'blue'
-    default_root_fg = 'light_gray'
-    default_root_fm = 'none'
+    default_root_bg = getenv('PBT_CAR_BG', 'blue')
+    default_root_fg = getenv('PBT_CAR_FG', 'light_gray')
+    default_root_fm = getenv('PBT_CAR_FM', 'none')
     default_dir_bg = default_root_bg
     default_dir_fg = default_root_fg
     default_dir_fm = default_root_fm
@@ -40,7 +40,7 @@ class DirCar(Car):
         'root': {
             'bg': getenv('PBT_CAR_DIR_BG', default_root_bg),
             'fg': getenv('PBT_CAR_DIR_FG', default_root_fg),
-            'fm': getenv('PBT_CAR_DIR_FG', default_root_fm),
+            'fm': getenv('PBT_CAR_DIR_FM', default_root_fm),
             'text': getenv('PBT_CAR_DIR_FORMAT', ' {{ Dir }} '),
         },
         'Dir': {
@@ -58,3 +58,5 @@ class DirCar(Car):
     }
 
     display = getenv('PBT_CAR_DIR_DISPLAY', True)
+    wrap = getenv('PBT_CAR_DIR_WRAP', False)
+    sep = getenv('PBT_CAR_DIR_SEP', None)
