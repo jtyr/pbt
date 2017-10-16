@@ -8,10 +8,11 @@ from pbt.core import BOOL_TRUE, Car
 
 def _get_dir():
     pwd = getenv('PWD', getcwd())
-    sep_repl = getenv('PBT_CAR_DIR_SEP', sep)
+    dirsep = getenv('PBT_CAR_DIR_DIRSEP', sep)
+    userdir_sign = getenv('PBT_CAR_DIR_HOMESIGN', '~')
 
-    if getenv('PBT_CAR_DIR_HOME', True) in BOOL_TRUE:
-        pwd = pwd.replace(expanduser('~'), '~')
+    if userdir_sign:
+        pwd = pwd.replace(expanduser('~'), userdir_sign)
 
     dirs = pwd.split(sep)
     depth = int(getenv('PBT_CAR_DIR_DEPTH', 1))
@@ -21,9 +22,9 @@ def _get_dir():
     elif pwd == '~':
         ret = pwd
     elif len(dirs) > 1:
-        ret = sep_repl.join(dirs[(-1 * depth):])
+        ret = dirsep.join(dirs[(-1 * depth):])
     else:
-        ret = sep_repl.join(dirs)
+        ret = dirsep.join(dirs)
 
     return ret
 
