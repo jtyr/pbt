@@ -30,10 +30,10 @@ class CustomCar(Car):
             'fm': getenv(
                 'PBT_CAR_CUSTOM_TEXT_FM', getenv(
                     'PBT_CAR_CUSTOM_FM', default_text_fm)),
-            'text': getenv('PBT_CAR_CUSTOM_TEXT', '?'),
+            'text': getenv('PBT_CAR_CUSTOM_TEXT_TEXT', '?'),
         },
     }
 
-    display = getenv('PBT_CAR_TEXT_DISPLAY', True)
-    wrap = getenv('PBT_CAR_TEXT_WRAP', False)
-    sep = getenv('PBT_CAR_TEXT_SEP', None)
+    display = getenv('PBT_CAR_CUSTOM_DISPLAY', True)
+    wrap = getenv('PBT_CAR_CUSTOM_WRAP', False)
+    sep = getenv('PBT_CAR_CUSTOM_SEP', None)
