@@ -108,18 +108,7 @@ unset PBT_CAR_TIME_FORMAT
 unset PBT_CARS
 ### Themes
 # Load theme
-source /path/to/themes/square_brackets_multiline
-```
-
-In order to allow the `ExecTime` car to calculate the execution time of every
-command executed by the shell, the following must be placed into the shell
-profile file:
-
-```shell
-# For ZSH
-source /path/to/the/pbt/sources/ExecTime.zsh
-# For Bash
-source /path/to/the/pbt/sources/ExecTime.bash
+source /usr/share/pbt/themes/square_brackets_multiline
 ```
 
 
@@ -157,7 +146,7 @@ Only a limited number of named colors is supported:
 - ![light_magenta](https://placehold.it/10/ff55ff/000000?text=+) `light_magenta`
 - ![light_cyan](https://placehold.it/10/55ffff/000000?text=+) `light_cyan`
 - ![white](https://placehold.it/10/ffffff/000000?text=+) `white`
-- `default` (default color of the terminal - usually transarent)
+- `default` (default color of the terminal - usually transparent)
 
 Examples:
 
@@ -311,7 +300,7 @@ custom text.
 
 - `PBT_CAR_CUSTOM_TEXT_FG`
 
-  foreround color of the `{{ Text }}` element.
+  Foreground color of the `{{ Text }}` element.
 
 - `PBT_CAR_CUSTOM_TEXT_FM`
 
@@ -360,7 +349,7 @@ Car that displays current directory name.
 
 - `PBT_CAR_DIR_DIR_FG`
 
-  foreround color of the `{{ Dir }}` element.
+  Foreground color of the `{{ Dir }}` element.
 
 - `PBT_CAR_DIR_DIR_FM`
 
@@ -376,7 +365,7 @@ Car that displays current directory name.
 
 - `PBT_CAR_DIR_HOMESIGN="~"`
 
-  Character which represents ther user's home directory. If set to empty
+  Character which represents the user's home directory. If set to empty
   string, full home directory path is used instead.
 
 - `PBT_CAR_DIR_DEPTH="1"`
@@ -422,7 +411,7 @@ Car that displays how long each shell command run.
 
 - `PBT_CAR_EXECTIME_TIME_FG`
 
-  foreround color of the `{{ Time }}` element.
+  Foreground color of the `{{ Time }}` element.
 
 - `PBT_CAR_EXECTIME_TIME_FM`
 
@@ -438,7 +427,7 @@ Car that displays how long each shell command run.
 
 - `PBT_CAR_EXECTIME_PRECISION="0"`
 
-  Sub-second precission to show.
+  Sub-second precision to show.
 
 - `PBT_CAR_EXECTIME_SECS`
 
@@ -500,7 +489,7 @@ displayed only if the current directory is a Git repository.
 
 - `PBT_CAR_GIT_ICON_FG`
 
-  foreround color of the `{{ Icon }}` element.
+  Foreground color of the `{{ Icon }}` element.
 
 - `PBT_CAR_GIT_ICON_FM`
 
@@ -516,7 +505,7 @@ displayed only if the current directory is a Git repository.
 
 - `PBT_CAR_GIT_HEAD_FG`
 
-  foreround color of the `{{ Head }}` element.
+  Foreground color of the `{{ Head }}` element.
 
 - `PBT_CAR_GIT_HEAD_FM`
 
@@ -533,7 +522,7 @@ displayed only if the current directory is a Git repository.
 
 - `PBT_CAR_GIT_STATUS_FG`
 
-  foreround color of the `{{ Status }}` element.
+  Foreground color of the `{{ Status }}` element.
 
 - `PBT_CAR_GIT_STATUS_FM`
 
@@ -550,7 +539,7 @@ displayed only if the current directory is a Git repository.
 
 - `PBT_CAR_GIT_DIRTY_FG="red"`
 
-  foreround color of the `{{ Dirty }}` element.
+  Foreground color of the `{{ Dirty }}` element.
 
 - `PBT_CAR_GIT_DIRTY_FM`
 
@@ -566,7 +555,7 @@ displayed only if the current directory is a Git repository.
 
 - `PBT_CAR_GIT_CLEAN_FG="green"`
 
-  foreround color of the `{{ Clean }}` element.
+  Foreground color of the `{{ Clean }}` element.
 
 - `PBT_CAR_GIT_CLEAN_FM`
 
@@ -582,7 +571,7 @@ displayed only if the current directory is a Git repository.
 
 - `PBT_CAR_GIT_AHEAD_FG`
 
-  foreround color of the `{{ Ahead }}` element.
+  Foreground color of the `{{ Ahead }}` element.
 
 - `PBT_CAR_GIT_AHEAD_FM`
 
@@ -598,7 +587,7 @@ displayed only if the current directory is a Git repository.
 
 - `PBT_CAR_GIT_BEHIND_FG`
 
-  foreround color of the `{{ Behind }}` element.
+  Foreground color of the `{{ Behind }}` element.
 
 - `PBT_CAR_GIT_BEHIND_FM`
 
@@ -648,7 +637,7 @@ local machine.
 
 - `PBT_CAR_HOSTNAME_USERHOST_FG`
 
-  foreround color of the `{{ UserHost }}` element.
+  Foreground color of the `{{ UserHost }}` element.
 
 - `PBT_CAR_HOSTNAME_USERHOST_FM`
 
@@ -664,7 +653,7 @@ local machine.
 
 - `PBT_CAR_HOSTNAME_USER_FG`
 
-  foreround color of the `{{ User }}` element.
+  Foreground color of the `{{ User }}` element.
 
 - `PBT_CAR_HOSTNAME_USER_FM`
 
@@ -680,7 +669,7 @@ local machine.
 
 - `PBT_CAR_HOSTNAME_HOST_FG`
 
-  foreround color of the `{{ Host }}` element.
+  Foreground color of the `{{ Host }}` element.
 
 - `PBT_CAR_HOSTNAME_HOST_FM`
 
@@ -729,7 +718,7 @@ Car that displays icon of the operating system.
 
 - `PBT_CAR_OS_SYMBOL_FG`
 
-  foreround color of the `{{ Symbol }}` element.
+  Foreground color of the `{{ Symbol }}` element.
 
 - `PBT_CAR_OS_SYMBOL_FM`
 
@@ -744,27 +733,27 @@ Car that displays icon of the operating system.
   The name of the symbol to display. Default value is selected by the system
   the shell runs at. Possible names and their icons are:
 
-  - `arch` ()
-  - `centos` ()
-  - `coreos` ()
-  - `darwin` ()
-  - `debian` ()
-  - `docker` ()
-  - `elementary` ()
-  - `fedora` ()
-  - `freebsd` ()
-  - `gentoo` ()
-  - `linux` ()
-  - `linuxmint` ()
-  - `mageia` ()
-  - `mandriva` ()
-  - `opensuse` ()
-  - `raspbian` ()
-  - `redhat` ()
-  - `sabayon` ()
-  - `slackware` ()
-  - `ubuntu` ()
-  - `windows` ()
+  - `arch` 
+  - `centos` 
+  - `coreos` 
+  - `darwin` 
+  - `debian` 
+  - `docker` 
+  - `elementary` 
+  - `fedora` 
+  - `freebsd` 
+  - `gentoo` 
+  - `linux` 
+  - `linuxmint` 
+  - `mageia` 
+  - `mandriva` 
+  - `opensuse` 
+  - `raspbian` 
+  - `redhat` 
+  - `sabayon` 
+  - `slackware` 
+  - `ubuntu` 
+  - `windows` 
 
   Example:
 
@@ -812,7 +801,7 @@ train.
 
 - `PBT_CAR_SIGN_SYMBOL_FG`
 
-  foreround color of the `{{ Symbol }}` element.
+  Foreground color of the `{{ Symbol }}` element.
 
 - `PBT_CAR_SIGN_SYMBOL_FM="bold"`
 
@@ -829,7 +818,7 @@ train.
 
 - `PBT_CAR_SIGN_ADMIN_FG="red"`
 
-  foreround color of the `{{ Admin }}` element.
+  Foreground color of the `{{ Admin }}` element.
 
 - `PBT_CAR_SIGN_ADMIN_FM`
 
@@ -845,7 +834,7 @@ train.
 
 - `PBT_CAR_SIGN_USER_FG="light_green"`
 
-  foreround color of the `{{ User }}` element.
+  Foreground color of the `{{ User }}` element.
 
 - `PBT_CAR_SIGN_USER_FM`
 
@@ -904,7 +893,7 @@ Car that visualizes return code of every command.
 
 - `PBT_CAR_STATUS_SYMBOL_FG`
 
-  foreround color of the `{{ Symbol }}` element.
+  Foreground color of the `{{ Symbol }}` element.
 
 - `PBT_CAR_STATUS_SYMBOL_FM="bold"`
 
@@ -912,7 +901,7 @@ Car that visualizes return code of every command.
 
 - `PBT_CAR_STATUS_SYMBOL_FORMAT`
 
-  Format of the `{{ Symbol }}` element. The format is either `{{ Errot }}` if
+  Format of the `{{ Symbol }}` element. The format is either `{{ Error }}` if
   the last command returned non zero return code otherwise `{{ User }}` is
   used.
 
@@ -922,7 +911,7 @@ Car that visualizes return code of every command.
 
 - `PBT_CAR_STATUS_CODE_FG="light_gray"`
 
-  foreround color of the `{{ Code }}` element.
+  Foreground color of the `{{ Code }}` element.
 
 - `PBT_CAR_STATUS_CODE_FM="none"`
 
@@ -938,7 +927,7 @@ Car that visualizes return code of every command.
 
 - `PBT_CAR_STATUS_ERROR_FG="light_gray"`
 
-  foreround color of the `{{ Error }}` element.
+  Foreground color of the `{{ Error }}` element.
 
 - `PBT_CAR_STATUS_ERROR_FM="none"`
 
@@ -954,7 +943,7 @@ Car that visualizes return code of every command.
 
 - `PBT_CAR_STATUS_OK_FG="light_gray"`
 
-  foreround color of the `{{ Ok }}` element.
+  Foreground color of the `{{ Ok }}` element.
 
 - `PBT_CAR_STATUS_OK_FM="none"`
 
@@ -1003,7 +992,7 @@ Car that displays current date and time.
 
 - `PBT_CAR_TIME_DATETIME_FG`
 
-  foreround color of the `{{ DateTime }}` element.
+  Foreground color of the `{{ DateTime }}` element.
 
 - `PBT_CAR_TIME_DATETIME_FM`
 
@@ -1019,7 +1008,7 @@ Car that displays current date and time.
 
 - `PBT_CAR_TIME_DATE_FG`
 
-  foreround color of the `{{ Date }}` element.
+  Foreground color of the `{{ Date }}` element.
 
 - `PBT_CAR_TIME_DATE_FM`
 
@@ -1027,7 +1016,7 @@ Car that displays current date and time.
 
 - `PBT_CAR_TIME_DATE_FORMAT="%a %d %b"`
 
-  Format of the `{{ Date }}` element. The format is using variables known from
+  Format of the `{{ Date }}` element. The format is using sequences known from
   the `date` command.
 
 - `PBT_CAR_TIME_TIME_BG`
@@ -1036,7 +1025,7 @@ Car that displays current date and time.
 
 - `PBT_CAR_TIME_TIME_FG="light_yellow"`
 
-  foreround color of the `{{ Host }}` element.
+  Foreground color of the `{{ Host }}` element.
 
 - `PBT_CAR_TIME_TIME_FM`
 
@@ -1044,7 +1033,7 @@ Car that displays current date and time.
 
 - `PBT_CAR_TIME_TIME_TEXT="%H:%M:%S"`
 
-  Text content of the `{{ Host }}` element. The format is using variables known
+  Text content of the `{{ Host }}` element. The format is using sequences known
   from the `date` command.
 
 - `PBT_CAR_TIME_DISPLAY="1"`
@@ -1082,7 +1071,7 @@ make
 That will create a binary file `pbt` which can be used in the `PROMPT`
 environment variable instead of the Python script as shown above.
 
-The conpilation process sometimes incorrectly recognizes where Python's libraries
+The compilation process sometimes incorrectly recognizes where Python's libraries
 are exactly installed. Then we can get errors like this:
 
 ```
