@@ -80,13 +80,13 @@ true
 ### Test the Dir car
 cd /
 cd /usr/share/doc/sudo
-cd ~
 # Display only last 3 elements of the path
 export PBT_CAR_DIR_DEPTH="3"
 # Display full path
 export PBT_CAR_DIR_DEPTH="9999"
 # Show only last element of the path
 unset PBT_CAR_DIR_DEPTH
+cd ~
 ### Test Time car
 # Add the Time car into the train
 export PBT_CARS="Status, Os, Time, Hostname, Dir, Sign"
@@ -99,7 +99,7 @@ export PBT_CAR_TIME_DATE_FG="black"
 # Reset the color of the Date part
 unset PBT_CAR_TIME_DATE_FG
 # Reset the background color of all Time car
-unset export PBT_CAR_TIME_BG
+unset PBT_CAR_TIME_BG
 # Remove the Date part from the car
 export PBT_CAR_TIME_FORMAT=" {{ Time }} "
 # Reset the format of the car

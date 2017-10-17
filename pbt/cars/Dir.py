@@ -3,7 +3,7 @@
 from os import getcwd, getenv, sep
 from os.path import expanduser
 
-from pbt.core import BOOL_TRUE, Car
+from pbt.core import Car
 
 
 def _get_dir():
@@ -18,7 +18,7 @@ def _get_dir():
     depth = int(getenv('PBT_CAR_DIR_DEPTH', 1))
 
     if pwd == sep:
-        ret = sep_repl
+        ret = dirsep
     elif pwd == '~':
         ret = pwd
     elif len(dirs) > 1:
