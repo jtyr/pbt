@@ -21,7 +21,7 @@ if os.path.exists('pbt.py'):
 
 setup(
     name='pbt',
-    version='1.0.8',
+    version='1.0.9',
     description='Prompt decoration for ZSH and Bash written in Python',
     author='Jiri Tyr',
     author_email='jiri.tyr@gmail.com',

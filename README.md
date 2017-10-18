@@ -230,8 +230,8 @@ Formatting is done via `_FM` variables. The possible values are:
   without the extension in the `pbt/cars/` directory.
 
   To add a new car into the train, the whole variable must be redefined. For
-  example in order to add the `Time` car to the default set of cars, the
-  variable should look like this:
+  example in order to add the `Time` car into the default set of cars between
+  the `Os` and `Hostname` car, the variable should look like this:
 
   ```shell
   export PBT_CARS="Status, Os, Time, Hostname, Dir, Git, Sign"
@@ -271,6 +271,18 @@ Formatting is done via `_FM` variables. The possible values are:
 - `PBT_BEGINNING_TEXT=""`
 
   Text shown at the beginning of the train.
+
+- `PBT_SHELL`
+
+  Indicates which shell is used. The value can be either `zsh` or `bash`. By
+  default, the value is extracted from the `$SHELL` environment variable. Set
+  this variable to `bash` if your default shell is ZSH but you want to test PBT
+  in Bash:
+
+  ```shell
+  export PBT_SHELL="bash"
+  bash
+  ```
 
 - `PBT_DEBUG="0"`
 
