@@ -1,9 +1,15 @@
 Python Bullet Train (PBT)
 =========================
 
-Prompt decoration for ZSH and Bash. Inspired by the [Oh My
-ZSH](https://github.com/robbyrussell/oh-my-zsh) [Bullet
+Highly configurable prompt decoration for ZSH and Bash written in Python. It's
+inspired by the [Oh My ZSH](https://github.com/robbyrussell/oh-my-zsh) [Bullet
 Train](https://github.com/caiogondim/bullet-train.zsh) theme.
+
+![Screenshot](https://raw.githubusercontent.com/jtyr/pbt/master/images/screenshot01.png "Screenshot")
+
+Works well on Linux (Terminator, Konsole, Gnome Terminal) and Mac (Terminal,
+iTerm). It has no other dependencies than Python (v2.x or v3.x) and its
+standard libraries.
 
 
 Table of contents
@@ -33,7 +39,7 @@ Table of contents
 Installation
 ------------
 
-In Arch Linux:
+On Arch Linux:
 
 ```shell
 yaourt -S pbt-git
@@ -1031,7 +1037,7 @@ Car that displays current date and time.
 
   Formatting of the `{{ Host }}` element.
 
-- `PBT_CAR_TIME_TIME_TEXT="%H:%M:%S"`
+- `PBT_CAR_TIME_TIME_FORMAT="%H:%M:%S"`
 
   Text content of the `{{ Host }}` element. The format is using sequences known
   from the `date` command.
