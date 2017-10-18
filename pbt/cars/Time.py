@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from time import gmtime, strftime
+from time import localtime, strftime
 from os import getenv
 
 from pbt.core import Car
@@ -54,7 +54,7 @@ class TimeCar(Car):
                     'PBT_CAR_TIME_DATETIME_FM', getenv(
                         'PBT_CAR_TIME_FM', default_date_fm))),
             'text': strftime(getenv(
-                'PBT_CAR_TIME_DATE_FORMAT', '%a %d %b'), gmtime()),
+                'PBT_CAR_TIME_DATE_FORMAT', '%a %d %b'), localtime()),
         },
         'Time': {
             'bg': getenv(
@@ -70,7 +70,7 @@ class TimeCar(Car):
                     'PBT_CAR_TIME_DATETIME_FM', getenv(
                         'PBT_CAR_TIME_FM', default_time_fm))),
             'text': strftime(getenv(
-                'PBT_CAR_TIME_TIME_FORMAT', '%H:%M:%S'), gmtime()),
+                'PBT_CAR_TIME_TIME_FORMAT', '%H:%M:%S'), localtime()),
         },
     }
 
