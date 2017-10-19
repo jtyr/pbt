@@ -9,6 +9,8 @@ from distutils.core import setup
 import os
 import shutil
 
+from pbt import VERSION
+
 
 with open('README.md') as file:
     long_description = file.read()
@@ -21,7 +23,7 @@ if os.path.exists('pbt.py'):
 
 setup(
     name='pbt',
-    version='1.0.9',
+    version=VERSION,
     description='Prompt decoration for ZSH and Bash written in Python',
     author='Jiri Tyr',
     author_email='jiri.tyr@gmail.com',

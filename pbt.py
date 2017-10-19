@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from argparse import ArgumentParser
 from importlib import import_module
 from os import getenv
 from re import split as resplit
-from sys import stderr, stdout, version_info
+from sys import exit, stderr, stdout, version_info
 from traceback import print_exc
 
+from pbt import VERSION
 from pbt.core import BOOL_TRUE, Car, SHELL
 
 
@@ -54,6 +56,23 @@ def print_train(cars):
 
 
 def main():
+    # Read the command line options
+    parser = ArgumentParser(
+        description='Highly configurable prompt decoration for ZSH and Bash.')
+    parser.add_argument(
+        '-v', '--version',
+        help='show version and exit',
+        action='store_true')
+    parser.add_argument(
+        'RC',
+        nargs='?',
+        help='return code of the executed command')
+    args = parser.parse_args()
+
+    if args.version:
+        print("PBT v%s" % VERSION)
+        exit(0)
+
     if version_info < (3, 0):
         import sys
         reload(sys)
