@@ -49,6 +49,17 @@ PROMPT='$(pbt $?)'
 PS1='$(pbt $?)'
 ```
 
+or on Mac via [`brew`](https://brew.sh/):
+
+```
+brew tap jtyr/repo
+brew install pbt
+# For ZSH
+PROMPT='$(pbt $?)'
+# For Bash
+PS1='$(pbt $?)'
+```
+
 or via PyPi:
 
 ```shell
