@@ -42,7 +42,7 @@ Installation
 On Arch Linux:
 
 ```shell
-yaourt -S pbt-git
+yaourt -S pbt
 # For ZSH
 PROMPT='$(pbt $?)'
 # For Bash
