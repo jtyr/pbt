@@ -28,6 +28,7 @@ Table of contents
     - [`Git` car](#git-car)
     - [`Hostname` car](#hostname-car)
     - [`Os` car](#os-car)
+    - [`PyVirtEnv` car](#pyvirtenv-car)
     - [`Sign` car](#sign-car)
     - [`Status` car](#status-car)
     - [`Time` car](#time-car)
@@ -80,11 +81,17 @@ PROMPT='$(~/pbt/pbt.py $?)'
 PS1='$(~/pbt/pbt.py $?)'
 ```
 
+In order to display all colors correctly, the terminal should use 256 color
+scheme:
+
+```shell
+export TERM="xterm-256color"
+```
+
 In order to display all characters of the prompt correctly, the shell should
 support UTF-8 and [Nerd](https://github.com/ryanoasis/nerd-fonts) (or at least
-[Powerline](https://github.com/ryanoasis/powerline-extra-symbols) and
-[Devicons](https://vorillaz.github.io/devicons/)) fonts should be installed and
-set in the terminal application.
+[Powerline](https://github.com/ryanoasis/powerline-extra-symbols)) fonts should
+be installed and set in the terminal application.
 
 
 Usage
@@ -626,7 +633,7 @@ displayed only if the current directory is a Git repository.
 
   Text content of the `{{ Behind }}` element.
 
-- `PBT_CAR_GIT_DISPLAY="1"`
+- `PBT_CAR_GIT_DISPLAY`
 
   Whether to display this car if it's in the list of cars (`PBT_CARS`).
 
@@ -803,6 +810,81 @@ Car that displays icon of the operating system.
   Custom separator string for this car.
 
 
+#### `PyVirtEnv` car
+
+Car that displays Python Virtual Environment name. This car is displayed only
+if the Python Virtual Environment is activated. The activation script usually
+prepends the shell prompt by the Virtual Environment name by default. In order
+to disable it, the following environment variable must be set:
+
+```shell
+export VIRTUAL_ENV_DISABLE_PROMPT="1"
+```
+
+Variables used by the car:
+
+- `PBT_CAR_PYVIRTENV_BG="222"`
+
+  Background color of the car.
+
+- `PBT_CAR_PYVIRTENV_FG="black"`
+
+  Foreground color of the car.
+
+- `PBT_CAR_PYVIRTENV_FM="none"`
+
+  Formatting of the car.
+
+- `PBT_CAR_PYVIRTENV_FORMAT=" {{ Icon }} {{ Name }} "`
+
+  Format of the car.
+
+- `PBT_CAR_PYVIRTENV_ICON_BG`
+
+  Background color of the `{{ Icon }}` element.
+
+- `PBT_CAR_PYVIRTENV_ICON_FG`
+
+  Foreground color of the `{{ Icon }}` element.
+
+- `PBT_CAR_PYVIRTENV_ICON_FM`
+
+  Formatting of the `{{ Icon }}` element.
+
+- `PBT_CAR_PYVIRTENV_ICON_TEXT`
+
+  Text content of the `{{ Icon }}` element.
+
+- `PBT_CAR_PYVIRTENV_NAME_BG`
+
+  Background color of the `{{ Name }}` element.
+
+- `PBT_CAR_PYVIRTENV_NAME_FG="33"`
+
+  Foreground color of the `{{ NAME }}` element.
+
+- `PBT_CAR_PYVIRTENV_NAME_FM`
+
+  Formatting of the `{{ Name }}` element.
+
+- `PBT_CAR_PYVIRTENV_NAME_TEXT`
+
+  The name of the Python Virtual Environment deducted from the `VIRTUAL_ENV`
+  environment variable.
+
+- `PBT_CAR_PYVIRTENV_DISPLAY`
+
+  Whether to display this car if it's in the list of cars (`PBT_CARS`).
+
+- `PBT_CAR_PYVIRTENV_WRAP="0"`
+
+  Whether to wrap the prompt line in front of this car.
+
+- `PBT_CAR_PYVIRTENV_SEP`
+
+  Custom separator string for this car.
+
+
 #### `Sign` car
 
 Car that displays prompt character for the admin and user at the end of the
@@ -888,7 +970,15 @@ train.
 
 #### `Status` car
 
-Car that visualizes return code of every command.
+Car that visualizes return code of every command. By default, this car is
+displayed only when the return code is non-zero. If you want to display it even
+when if the return code is zere, set the following variable:
+
+```shell
+export PBT_CAR_STATUS_DISPLAY="1"
+```
+
+Variables used by the car:
 
 - `PBT_CAR_STATUS_BG`
 
@@ -982,7 +1072,7 @@ Car that visualizes return code of every command.
 
   Text content of the `{{ Ok }}` element.
 
-- `PBT_CAR_STATUS_DISPLAY="1"`
+- `PBT_CAR_STATUS_DISPLAY`
 
   Whether to display this car if it's in the list of cars (`PBT_CARS`).
 
