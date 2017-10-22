@@ -12,12 +12,16 @@ from pbt import VERSION
 from pbt.core import BOOL_TRUE, Car, SHELL
 
 
-def print_train(cars):
-    separator = getenv('PBT_SEPARATOR', '')
+def print_train(cars, right):
+    if right:
+        separator = getenv('PBT_RSEPARATOR', '')
+    else:
+        separator = getenv('PBT_SEPARATOR', '')
+
     prev_bg = None
     prev_display = True
 
-    if getenv('PBT_BEGINNING_TEXT', ''):
+    if not right and getenv('PBT_BEGINNING_TEXT', ''):
         fake_car = Car()
 
         stdout.write(
@@ -32,14 +36,23 @@ def print_train(cars):
             if prev_bg is not None and prev_display:
                 if car.wrap:
                     bg = car.get_color('default')
+                    fg = car.get_color('default', True)
                 else:
                     bg = car.get_color(car.model['root']['bg'])
+                    fg = car.get_color(car.model['root']['bg'], True)
 
-                stdout.write(
-                    car.elem_color(
-                        fg=car.get_color(prev_bg, True),
-                        bg=bg,
-                        text=separator if car.sep is None else car.sep))
+                if right:
+                    stdout.write(
+                        car.elem_color(
+                            bg=car.get_color(prev_bg),
+                            fg=fg,
+                            text=separator if car.sep is None else car.sep))
+                else:
+                    stdout.write(
+                        car.elem_color(
+                            bg=bg,
+                            fg=car.get_color(prev_bg, True),
+                            text=separator if car.sep is None else car.sep))
 
                 if car.wrap:
                     stdout.write("\n")
@@ -64,6 +77,10 @@ def main():
         help='show version and exit',
         action='store_true')
     parser.add_argument(
+        '-r', '--right',
+        help='build right hand side prompt',
+        action='store_true')
+    parser.add_argument(
         'RC',
         nargs='?',
         help='return code of the executed command')
@@ -78,7 +95,10 @@ def main():
         reload(sys)
         sys.setdefaultencoding('utf8')
 
-    cars_str = getenv('PBT_CARS', "Status, Os, Hostname, Dir, Git, Sign")
+    if args.right:
+        cars_str = getenv('PBT_RCARS', "Time")
+    else:
+        cars_str = getenv('PBT_CARS', "Status, Os, Hostname, Dir, Git, Sign")
     cars_names = resplit(r'\s*,\s*', cars_str)
     cars = []
 
@@ -95,7 +115,7 @@ def main():
             if getenv('PBT_DEBUG', False) in BOOL_TRUE:
                 print_exc(file=stderr)
 
-    print_train(cars)
+    print_train(cars, args.right)
 
 
 if __name__ == '__main__':

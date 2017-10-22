@@ -170,7 +170,7 @@ Only a limited number of named colors is supported:
 - ![light_magenta](https://placehold.it/10/ff55ff/000000?text=+) `light_magenta`
 - ![light_cyan](https://placehold.it/10/55ffff/000000?text=+) `light_cyan`
 - ![white](https://placehold.it/10/ffffff/000000?text=+) `white`
-- `default` (default color of the terminal - usually transparent)
+- `default` (default color of the terminal)
 
 Examples:
 
@@ -255,9 +255,29 @@ Formatting is done via `_FM` variables. The possible values are:
   export PBT_CARS="Status, Os, Time, Hostname, Dir, Git, Sign"
   ```
 
+- `PBT_RCARS="Time"`
+
+  The same like `PBT_CARS` but for the right hand side prompt.
+
+  ```shell
+  # Add the Custom car into the right hand site car to have the separator visible
+  export PBT_RCARS="Custom, Time"
+  # Make the Custom car to be invisible (zero length text)
+  export PBT_CAR_CUSTOM_BG="default"
+  export PBT_CAR_CUSTOM_FORMAT=""
+  # Show only time
+  export PBT_CAR_TIME_FORMAT=" {{ Time }} "
+  # Set the right hand side prompt (ZSH only)
+  export RPROMPT='$(pbt -r)'
+  ```
+
 - `PBT_SEPARATOR=""`
 
   Character used to separate cars in the train.
+
+- `PBT_RSEPARATOR=""`
+
+  The same like `PBT_SEPARATOR` but for the righ hand side prompt.
 
 - `PBT_CAR_BG`
 
