@@ -35,7 +35,7 @@ class SignCar(Car):
                 'PBT_CAR_SIGN_SYMBOL_FM', getenv(
                     'PBT_CAR_SIGN_FM', default_symbol_fm)),
             'text': getenv(
-                'PBT_CAR_SIGN_SIGN_FORMAT',
+                'PBT_CAR_SIGN_SYMBOL_FORMAT',
                 '{{ %s }}' % ('Admin' if getuid() == 0 else 'User')),
         },
         'User': {

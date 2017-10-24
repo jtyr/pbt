@@ -52,7 +52,7 @@ PS1='$(pbt $?)'
 
 or on Mac via [`brew`](https://brew.sh/):
 
-```
+```shell
 brew tap jtyr/repo
 brew install pbt
 # For ZSH

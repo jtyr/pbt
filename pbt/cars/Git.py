@@ -175,7 +175,7 @@ class GitCar(Car):
                     'PBT_CAR_GIT_FM', default_ahead_fm)),
             'text': getenv(
                 'PBT_CAR_GIT_AHEAD_TEXT',
-                getenv('PBT_CAR_GIT_BEHIND_SYMBOL', ' ⬆') if (
+                getenv('PBT_CAR_GIT_AHEAD_SYMBOL', ' ⬆') if (
                     _compare_remote(display, True)
                 ) else ''),
         },
