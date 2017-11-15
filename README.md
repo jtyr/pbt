@@ -1,3 +1,8 @@
+This project is obsolete. Please use [GBT](https://github.com/jtyr/gbt) instead.
+================================================================================
+
+---
+
 Python Bullet Train (PBT)
 =========================
 
